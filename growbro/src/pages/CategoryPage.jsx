@@ -174,7 +174,7 @@ const CategoryPage = () => {
             )}
             <div className="flex items-center gap-4 mt-4">
               <div
-                className={`w-16 h-16 bg-gradient-to-br rounded-2xl shadow-sm flex items-center justify-center`}
+                className={`w-16 h-16 bg-gradient-to-br rounded-2xl shadow-sm flex items-center justify-center bg-white/20`}
               >
                 <span className="text-3xl">
                   <img
