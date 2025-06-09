@@ -110,16 +110,14 @@ const Wallet = () => {
     currentUser ? undefined : null
   )
 
-  const {
-    data: total,
-    isLoading: totalLoading,
-    mutate: refetchTotal,
-  } = useFrappeGetCall(
-    'rewardapp.wallet.get_deposit_and_withdrawal',
-    currentUser ? undefined : null
-  )
-
-  // console.log('total: ', total)
+  // const {
+  //   data: total,
+  //   isLoading: totalLoading,
+  //   mutate: refetchTotal,
+  // } = useFrappeGetCall(
+  //   'rewardapp.wallet.get_deposit_and_withdrawal',
+  //   currentUser ? undefined : null
+  // )
 
   const {
     data: transactionHistory,
@@ -132,9 +130,11 @@ const Wallet = () => {
         'name',
         'transaction_amount',
         'transaction_type',
+        'order_id',
         'question',
         'creation',
         'transaction_method',
+        'wallet_type',
         'transaction_status',
       ],
       filters: [['owner', '=', currentUser]],
@@ -144,11 +144,11 @@ const Wallet = () => {
         order: 'desc',
       },
     },
-    tab === 'all' && currentUser ? undefined : null
+    tab === 'All' && currentUser ? undefined : null
   )
 
   const {
-    data: depositsHistory,
+    data: creditHistory,
     isLoading: depositsHistoryLoading,
     mutate: refetchDepositsHistory,
   } = useFrappeGetDocList(
@@ -158,13 +158,16 @@ const Wallet = () => {
         'name',
         'transaction_amount',
         'transaction_type',
+        'order_id',
+        'question',
         'creation',
         'transaction_status',
+        'wallet_type',
         'transaction_method',
       ],
       filters: [
         ['owner', '=', currentUser],
-        ['transaction_type', '=', 'Recharge'],
+        ['transaction_type', '=', 'Credit'],
       ],
       limit: 10,
       orderBy: {
@@ -172,11 +175,11 @@ const Wallet = () => {
         order: 'desc',
       },
     },
-    tab === 'deposits' && currentUser ? undefined : null
+    tab === 'Credit' && currentUser ? undefined : null
   )
 
   const {
-    data: withdrawalsHistory,
+    data: debitHistory,
     isLoading: withdrawalsHistoryLoading,
     mutate: refetchWithdrawalsHistory,
   } = useFrappeGetDocList(
@@ -186,13 +189,16 @@ const Wallet = () => {
         'name',
         'transaction_amount',
         'transaction_type',
+        'order_id',
+        'question',
         'creation',
         'transaction_status',
+        'wallet_type',
         'transaction_method',
       ],
       filters: [
         ['owner', '=', currentUser],
-        ['transaction_type', '=', 'Withdrawal'],
+        ['transaction_type', '=', 'Debit'],
       ],
       limit: 10,
       orderBy: {
@@ -200,7 +206,7 @@ const Wallet = () => {
         order: 'desc',
       },
     },
-    tab === 'withdrawals' && currentUser ? undefined : null
+    tab === 'Debit' && currentUser ? undefined : null
   )
 
   // useEffect(() => {
@@ -338,9 +344,9 @@ const Wallet = () => {
         </div>
       </div> */}
 
-      <div className="w-full ">
+      <div className="w-full">
         <div className="space-y-4">
-          <div className="flex items-center gap-4 py-4">
+          <div className="flex items-center gap-4 py-4 bg-indigo-600 text-white">
             <div className="flex items-center">
               <button
                 onClick={() => navigate('/')}
@@ -352,76 +358,34 @@ const Wallet = () => {
             <h2 className="text-2xl font-bold text-center">Wallet</h2>
           </div>
 
-          <Card className="overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-lg rounded-2xl">
-            <CardContent className="p-0">
-              <div className="p-5">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="rounded-xl p-3 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30">
-                      <WalletIcon className="h-6 w-6 text-blue-500" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Wallet Balance
-                      </p>
-                      <h3 className="text-2xl font-bold mt-1">
-                        <span className="font-normal text-xl"></span>
-                        {userWalletData?.balance
-                          ? formatAmount(userWalletData?.balance)
-                          : formatAmount(0)}
-                      </h3>
+          <div className="px-4">
+            <Card className="overflow-hidden bg-white dark:bg-gray-800 border-0 rounded-2xl">
+              <CardContent className="p-0">
+                <div className="p-5">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="rounded-xl p-3 flex items-center justify-center bg-blue-100 dark:bg-blue-900/30">
+                        <WalletIcon className="h-6 w-6 text-blue-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Wallet Balance
+                        </p>
+                        <h3 className="text-2xl font-bold mt-1">
+                          <span className="font-normal text-xl"></span>
+                          {userWalletData?.balance
+                            ? formatAmount(userWalletData?.balance)
+                            : formatAmount(0)}
+                        </h3>
+                      </div>
                     </div>
                   </div>
-                  {/* <div>
-                    <Button
-                      variant="default"
-                      size="lg"
-                      disabled
-                      onClick={() => console.log('Recharge clicked')}
-                      className="rounded-xl transition-all duration-300 font-medium bg-gray-900 hover:bg-gray-800 text-white dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white"
-                    >
-                      Recharge
-                    </Button>
-                  </div> */}
                 </div>
-              </div>
+              </CardContent>
+            </Card>
+          </div>
 
-              {/* <div className="border-t border-gray-100 dark:border-gray-700">
-                <button
-                  onClick={() => setShowBreakdown(!showBreakdown)}
-                  className="flex items-center justify-center w-full py-3 text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
-                >
-                  <span>View breakdown</span>
-                  {showBreakdown ? (
-                    <ChevronUp className="ml-2 h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  )}
-                </button>
-
-                {showBreakdown && (
-                  <div className="overflow-hidden">
-                    <div className="px-4 py-3 space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500 dark:text-gray-400">
-                          Main Balance
-                        </span>
-                        <span className="font-medium">₹5.0</span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500 dark:text-gray-400">
-                          Bonus
-                        </span>
-                        <span className="font-medium">₹3.5</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div> */}
-            </CardContent>
-          </Card>
-
-          {/* <Card className="overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-lg rounded-2xl">
+          {/*<Card className="overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-lg rounded-2xl">
             <CardContent className="p-0">
               <div className="p-5">
                 <div className="flex items-start justify-between">
@@ -501,60 +465,63 @@ const Wallet = () => {
       </div>
 
       {/* Content Section */}
-      <div className="mt-4">
-        <div className="bg-white rounded-3xl shadow-sm">
-          {/* Add Money Section */}
-          <div className="p-6 border-b border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Add Money</h2>
+      <div className="px-4">
+        <div className="mt-4 mb-4">
+          <div className="bg-white rounded-3xl">
+            {/* Add Money Section */}
+            <div className="p-6 border-b border-gray-100">
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
+                Add Money
+              </h2>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
-                Enter Amount
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                  ₹
-                </span>
-                <input
-                  type="number"
-                  min="0"
-                  value={amount}
-                  onChange={(e) => {
-                    if (e.target.value >= 0) setAmount(e.target.value)
-                  }}
-                  className="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                  placeholder="0"
-                />
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Enter Amount
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                    ₹
+                  </span>
+                  <input
+                    type="number"
+                    min="0"
+                    value={amount}
+                    onChange={(e) => {
+                      if (e.target.value >= 0) setAmount(e.target.value)
+                    }}
+                    className="w-full pl-8 pr-4 py-3 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                    placeholder="0"
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
-                Quick Add
-              </label>
-              <div className="grid grid-cols-4 gap-3">
-                {quickAmounts.map((value) => (
-                  <button
-                    key={value}
-                    onClick={() => handleQuickAmount(value)}
-                    className="py-2 px-3 bg-gray-50 rounded-xl text-sm font-medium hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-600 mb-2">
+                  Quick Add
+                </label>
+                <div className="grid grid-cols-4 gap-3">
+                  {quickAmounts.map((value) => (
+                    <button
+                      key={value}
+                      onClick={() => handleQuickAmount(value)}
+                      className="py-2 px-3 bg-gray-50 rounded-xl text-sm font-medium hover:bg-indigo-50 hover:text-indigo-600 transition-colors"
+                    >
+                      ₹{value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger className="w-full">
+                  <Button
+                    className="bg-secondary w-full hover:bg-secondary/90"
+                    disabled
                   >
-                    ₹{value}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <Dialog open={open} onOpenChange={setOpen}>
-              <DialogTrigger className="w-full">
-                <Button
-                  className="bg-secondary w-full hover:bg-secondary/90"
-                  disabled
-                >
-                  Add Money
-                </Button>
-              </DialogTrigger>
-              {/* <DialogContent>
+                    Add Money
+                  </Button>
+                </DialogTrigger>
+                {/* <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Add Money to Wallet</DialogTitle>
                   <DialogDescription>
@@ -575,10 +542,9 @@ const Wallet = () => {
                   </DialogFooter>
                 </DialogHeader>
               </DialogContent> */}
-            </Dialog>
-          </div>
-          <div className="p-3 border-gray-100">
-            {/* {Balanced Card} */}
+              </Dialog>
+            </div>
+            {/* <div className="p-3 border-gray-100">
             <BalanceCard
               type="winnings"
               title="Winnings"
@@ -593,290 +559,279 @@ const Wallet = () => {
               <KycAlert />
             </BalanceCard>
             <div className="mt-2 border-b border-gray-100">
-              {/* Promotional Section */}
               <PromotionalSection
                 amount={2.19}
                 icon={<Gift className="h-6 w-6 text-purple-500" />}
                 iconBgClass="bg-purple-100 dark:bg-purple-900/30"
               />
             </div>
-          </div>
-          {/* Transactions Section */}
-          <div className="flex flex-col gap-2 p-2">
-            <div className="flex p-2">
-              <button
-                onClick={() => {
-                  handleTabChange('all')
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
-                  tab === 'all'
-                    ? 'bg-indigo-50 text-indigo-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => {
-                  handleTabChange('deposits')
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
-                  tab === 'deposits'
-                    ? 'bg-indigo-50 text-indigo-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                Deposits
-              </button>
-              <button
-                onClick={() => {
-                  handleTabChange('withdrawals')
-                }}
-                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
-                  tab === 'withdrawals'
-                    ? 'bg-indigo-50 text-indigo-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                Withdrawals
-              </button>
-            </div>
+          </div> */}
+            {/* Transactions Section */}
+            <div className="flex flex-col gap-2 p-2">
+              <div className="flex p-2">
+                <button
+                  onClick={() => {
+                    handleTabChange('All')
+                  }}
+                  className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
+                    tab === 'All'
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => {
+                    handleTabChange('Credit')
+                  }}
+                  className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
+                    tab === 'Credit'
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  Credit
+                </button>
+                <button
+                  onClick={() => {
+                    handleTabChange('Debit')
+                  }}
+                  className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-medium transition-colors ${
+                    tab === 'Debit'
+                      ? 'bg-indigo-50 text-indigo-600'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  Debit
+                </button>
+              </div>
 
-            {/* <div className="p-4 flex items-center justify-between border-b border-gray-100">
+              {/* <div className="p-4 flex items-center justify-between border-b border-gray-100">
               <button className="p-2 hover:bg-gray-50 rounded-lg transition-colors">
                 <Filter className="h-4 w-4 text-gray-600" />
               </button>
             </div> */}
 
-            <div className="">
-              {tab === 'all' ? (
-                transactionHistory?.length > 0 ? (
-                  <div className="p-2 text-sm font-medium text-gray-700">
-                    Recent Transactions
-                  </div>
-                ) : (
-                  <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
-                    No transactions history.
-                  </div>
-                )
-              ) : null}
-              {tab === 'deposits' ? (
-                depositsHistory?.length > 0 ? (
-                  <div className="p-2 text-sm font-medium text-gray-700">
-                    Recent Transactions
-                  </div>
-                ) : (
-                  <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
-                    No deposits history.
-                  </div>
-                )
-              ) : null}
-              {tab === 'withdrawals' ? (
-                withdrawalsHistory?.length > 0 ? (
-                  <div className="p-2 text-sm font-medium text-gray-700">
-                    Recent Transactions
-                  </div>
-                ) : (
-                  <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
-                    No withdrawals history.
-                  </div>
-                )
-              ) : null}
-              {tab === 'all' &&
-                transactionHistory?.map((transaction) => {
-                  console.log('Transaction:', transaction)
-
-                  if (
-                    transaction.transaction_type === 'Withdrawal' ||
-                    transaction.transaction_type === 'Recharge'
-                  ) {
-                    return (
-                      <div
-                        key={transaction.name}
-                        className="divide-y divide-gray-100"
-                      >
-                        <div className="p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                              <div
-                                className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
-                              >
-                                {transaction.transaction_status ===
-                                'Success' ? (
-                                  <Check className="h-5 w-5 text-green-600" />
-                                ) : (
-                                  <CircleX className="h-5 w-5 text-red-600" />
-                                )}
-                              </div>
-                              <div>
-                                <div className="font-medium text-gray-900">
-                                  Money Added
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {transaction.transaction_method}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className={`font-medium `}>
-                                {transaction.transaction_type === 'Recharge'
-                                  ? '+'
-                                  : '-'}
-                                ₹{transaction.transaction_amount}
-                              </div>
-                              <div className="flex items-center text-xs text-gray-500">
-                                <span className={'text-neutral-600'}>
-                                  {transaction.transaction_status}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {formatDate(transaction.creation)}
-                          </div>
-                        </div>
+              <div className="">
+                <div className="space-y-4">
+                  {tab === 'All' ? (
+                    transactionHistory?.length > 0 ? (
+                      <div className="p-2 text-sm font-medium text-gray-700">
+                        Recent Transactions
+                      </div>
+                    ) : (
+                      <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
+                        No transactions history.
                       </div>
                     )
-                  } else
-                    return (
-                      <div
-                        key={transaction.name}
-                        className="divide-y divide-gray-100"
-                      >
-                        <div className="p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                              <div
-                                className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
-                              >
-                                <ArrowDownLeft className="h-5 w-5" />
-                              </div>
-                              <div>
-                                <div className="font-medium text-gray-900">
-                                  {transaction.question}
-                                </div>
-                                <div className="text-sm text-gray-500">
-                                  {transaction.transaction_method}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className={`font-medium`}>
-                                {transaction.transaction_type === 'CREDIT'
-                                  ? '+'
-                                  : '-'}
-                                ₹{transaction.transaction_amount}
-                              </div>
-                              <div className="flex items-center text-xs text-gray-500">
-                                <span className={'text-neutral-600'}>
-                                  {transaction.transaction_status
-                                    .charAt(0)
-                                    .toUpperCase() +
-                                    transaction.transaction_status.slice(1)}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {formatDate(transaction.creation)}
-                          </div>
-                        </div>
+                  ) : null}
+                  {tab === 'Credit' ? (
+                    creditHistory?.length > 0 ? (
+                      <div className="p-2 text-sm font-medium text-gray-700">
+                        Recent Transactions
+                      </div>
+                    ) : (
+                      <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
+                        No credit history.
                       </div>
                     )
-                })}
+                  ) : null}
+                  {tab === 'Debit' ? (
+                    debitHistory?.length > 0 ? (
+                      <div className="p-2 text-sm font-medium text-gray-700">
+                        Recent Transactions
+                      </div>
+                    ) : (
+                      <div className="p-2 flex justify-center text-sm font-medium text-gray-700">
+                        No debit history.
+                      </div>
+                    )
+                  ) : null}
+                  {tab === 'All' &&
+                    transactionHistory?.map((transaction) => {
+                      console.log('Transaction:', transaction)
 
-              {tab === 'deposits' &&
-                depositsHistory?.map((transaction) => {
-                  console.log('Transaction:', transaction)
-                  return (
-                    <div
-                      key={transaction.name}
-                      className="divide-y divide-gray-100"
-                    >
-                      <div className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
-                            >
-                              <ArrowDownLeft className="h-5 w-5" />
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                Money Added
+                      return (
+                        <div
+                          key={transaction.name}
+                          className="divide-y divide-gray-100"
+                        >
+                          <div className="p-2">
+                            <div className="flex items-center justify-between mb-2 gap-3">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
+                                >
+                                  {transaction.transaction_status ===
+                                  'Success' ? (
+                                    <Check className="h-5 w-5 text-green-600" />
+                                  ) : (
+                                    <CircleX className="h-5 w-5 text-red-600" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900 text-xs">
+                                    {transaction.question}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {transaction.wallet_type} {` Wallet`}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {transaction.transaction_method}
+                              <div className="text-right">
+                                <div
+                                  className={`font-medium ${
+                                    transaction.transaction_type === 'Credit'
+                                      ? 'text-green-600'
+                                      : 'text-red-600'
+                                  } text-xs`}
+                                >
+                                  {transaction.transaction_type === 'Credit'
+                                    ? '+'
+                                    : '-'}
+                                  ₹{transaction.transaction_amount}
+                                </div>
+                                <div className="flex items-center text-xs text-gray-500">
+                                  <span className={'text-neutral-600'}>
+                                    {transaction.transaction_status}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="text-right">
-                            <div className={`font-medium`}>
-                              {'+'}₹{transaction.transaction_amount}
-                            </div>
-                            <div className="flex items-center text-xs text-neutral-600">
-                              <span className={''}>
-                                {transaction.transaction_status
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                  transaction.transaction_status.slice(1)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {formatDate(transaction.creation)}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              {tab === 'withdrawals' &&
-                withdrawalsHistory?.map((transaction) => {
-                  console.log('Transaction:', transaction)
-                  return (
-                    <div
-                      key={transaction.name}
-                      className="divide-y divide-gray-100"
-                    >
-                      <div className="p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-3">
-                            <div
-                              className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
-                            >
-                              <ArrowUpRight className="h-5 w-5" />
-                            </div>
-                            <div>
-                              <div className="font-medium text-gray-900">
-                                Money Added
+                            <div className="text-xs text-gray-500 flex gap-3 justify-between">
+                              <div className="font-medium">
+                                {transaction.order_id}
                               </div>
-                              <div className="text-sm text-gray-500">
-                                {transaction.transaction_method}
+
+                              <div className="font-semibold">
+                                {formatDate(transaction.creation)}
                               </div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className={`font-medium`}>
-                              {'-'}₹{transaction.transaction_amount}
+                        </div>
+                      )
+                    })}
+                  {tab === 'Credit' &&
+                    creditHistory?.map((transaction) => {
+                      console.log('Transaction:', transaction)
+                      return (
+                        <div
+                          key={transaction.name}
+                          className="divide-y divide-gray-100"
+                        >
+                          <div className="p-2">
+                            <div className="flex items-center justify-between mb-2 gap-3">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
+                                >
+                                  {transaction.transaction_status ===
+                                  'Success' ? (
+                                    <Check className="h-5 w-5 text-green-600" />
+                                  ) : (
+                                    <CircleX className="h-5 w-5 text-red-600" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900 text-xs">
+                                    {transaction.question}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {transaction.wallet_type} {` Wallet`}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div
+                                  className={`font-medium text-green-600 text-xs`}
+                                >
+                                  {'+'}₹{transaction.transaction_amount}
+                                </div>
+                                <div className="flex items-center text-xs text-neutral-600">
+                                  <span className={''}>
+                                    {transaction.transaction_status
+                                      .charAt(0)
+                                      .toUpperCase() +
+                                      transaction.transaction_status.slice(1)}
+                                  </span>
+                                </div>
+                              </div>
                             </div>
-                            <div className="flex items-center text-xs text-neutral-600">
-                              <span className={''}>
-                                {transaction.transaction_status
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                  transaction.transaction_status.slice(1)}
-                              </span>
+                            <div className="text-xs text-gray-500 flex gap-3 justify-between">
+                              <div className="font-medium">
+                                {transaction.order_id}
+                              </div>
+
+                              <div className="font-semibold">
+                                {formatDate(transaction.creation)}
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {formatDate(transaction.creation)}
+                      ) 
+                    })}
+                  {tab === 'Debit' &&
+                    debitHistory?.map((transaction) => {
+                      console.log('Transaction:', transaction)
+                      return (
+                        <div
+                          key={transaction.name}
+                          className="divide-y divide-gray-100"
+                        >
+                          <div className="p-2">
+                            <div className="flex items-center justify-between gap-3 mb-2">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`p-2 rounded-xl bg-emerald-50 text-emerald-600`}
+                                >
+                                  {transaction.transaction_status ===
+                                  'Success' ? (
+                                    <Check className="h-5 w-5 text-green-600" />
+                                  ) : (
+                                    <CircleX className="h-5 w-5 text-red-600" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="font-medium text-gray-900 text-xs">
+                                    {transaction.question}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {transaction.wallet_type} {` Wallet`}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div
+                                  className={`font-medium text-red-600 text-xs`}
+                                >
+                                  {'-'}₹{transaction.transaction_amount}
+                                </div>
+                                <div className="flex items-center text-xs text-neutral-600">
+                                  <span className={''}>
+                                    {transaction.transaction_status
+                                      .charAt(0)
+                                      .toUpperCase() +
+                                      transaction.transaction_status.slice(1)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-500 flex gap-3 justify-between">
+                              <div className="font-medium">
+                                {transaction.order_id}
+                              </div>
+
+                              <div className="font-semibold">
+                                {formatDate(transaction.creation)}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  )
-                })}
+                      )
+                    })}
+                </div>
+              </div>
             </div>
           </div>
         </div>
