@@ -172,36 +172,68 @@ def wallet_operation(doc, method):
             }
 
             if doc.order_type == "BUY":
+                total_amount = (doc.quantity - doc.filled_quantity) * doc.amount
+
                 order_book_data["price"] = 10 - doc.amount
                 order_book_data["opinion_type"] = "NO" if doc.opinion_type == "YES" else "YES"
 
-                transaction_amount = frappe.db.sql("""
-                SELECT count(transaction_amount)
-                FROM `tabTransaction Logs`
-                WHERE user = %s
-                AND market_id = %s
-                AND wallet_type = 'Promo'
-                GROUP BY order_id = %s
-                """(doc.user_id, doc.market_id, doc.name),as_dict=True)
-                wallet_data = frappe.db.sql("""
-                    SELECT name, balance FROM `tabUser Wallet`
-                    WHERE user = %s AND is_active = 1
-                """, (user_id,), as_dict=True)
+                refund_result = frappe.db.sql("""
+                    SELECT 
+                        SUM(CASE 
+                                WHEN transaction_type = 'Debit' THEN transaction_amount 
+                                WHEN transaction_type = 'Credit' THEN -transaction_amount 
+                                ELSE 0 
+                            END) AS refund_amount
+                    FROM `tabTransaction Logs`
+                    WHERE user = %s
+                    AND market_id = %s
+                    AND wallet_type = 'Promo'
+                    AND transaction_status = 'Success'
+                    AND order_id = %s
+                    GROUP BY order_id
+                """, (doc.user_id, doc.market_id, doc.name), as_dict=True)
 
-                if not wallet_data:
-                    frappe.throw(f"No active wallet found for {user_id}")
+                refund_amount = refund_result[0]["refund_amount"] if refund_result else 0
 
-                wallet_name = wallet_data[0]["name"]
-                available_balance = wallet_data[0]["balance"]
-                total_amount = doc.amount * (doc.quantity - doc.filled_quantity)
-                new_balance = available_balance + total_amount
+                if refund_amount > 0:
+                    refund_amount = min(refund_amount, total_amount)
 
-                frappe.db.sql("""
-                    UPDATE `tabUser Wallet`
-                    SET balance = %s
-                    WHERE name = %s
-                """, (new_balance, wallet_name))
+                    available_balance = frappe.db.get_value("Promotional Wallet", doc.user_id, "balance")
+                    new_balance = available_balance + refund_amount
 
+                    frappe.db.set_value("Promotional Wallet", doc.user_id, "balance", new_balance)
+
+                    frappe.get_doc({
+                        'doctype': "Transaction Logs",
+                        'market_id': doc.market_id,
+                        'user': doc.user_id,
+                        'wallet_type': 'Promo',
+                        'order_id': doc.name,
+                        'transaction_amount': refund_amount,
+                        'transaction_type': 'Credit',
+                        'transaction_status': 'Success',
+                        'transaction_method': 'WALLET'
+                    }).insert(ignore_permissions=True)
+
+                    total_amount -= refund_amount
+
+                if total_amount > 0:
+                    available_balance = frappe.db.get_value("User Wallet",doc.user_id, 'balance')
+                    new_balance = available_balance + total_amount
+
+                    frappe.db.set_value("User Wallet", doc.user_id, "balance", new_balance)
+
+                    frappe.get_doc({
+                        'doctype': "Transaction Logs",
+                        'market_id': doc.market_id,
+                        'user': doc.user_id,
+                        'wallet_type': 'Main',
+                        'order_id': doc.name,
+                        'transaction_amount': total_amount,
+                        'transaction_type': 'Credit',
+                        'transaction_status': 'Success',
+                        'transaction_method': 'WALLET'
+                    }).insert(ignore_permissions=True)
             else:
                 if not doc.holding_id:
                     frappe.db.sql("""
@@ -279,55 +311,47 @@ def get_deposit_and_withdrawal():
 
 @frappe.whitelist(allow_guest=True)
 def recharge_wallet(user, amount):
-    gst_config = frappe.db.sql(
-        """
-        SELECT
-            sgst_rate,
-            cgst_rate,
-            igst_rate
-        FROM `tabGST Config`
-        WHERE is_active = 1
-        LIMIT 1
-        """, as_dict=True
-    )
-    sgst_amount = 0
-    cgst_amount = 0
-    igst_amount = 0
-    if gst_config:
-        sgst_amount = amount * (gst_config[0]['sgst_rate']/100)
-        cgst_amount = amount * (gst_config[0]['cgst_rate']/100)
+    try:
+        # gst_config = frappe.db.sql(
+        #     """
+        #     SELECT
+        #         sgst_rate,
+        #         cgst_rate,
+        #         igst_rate
+        #     FROM `tabGST Config`
+        #     WHERE is_active = 1
+        #     LIMIT 1
+        #     """, as_dict=True
+        # )
+        # sgst_amount = 0
+        # cgst_amount = 0
+        # igst_amount = 0
+        # if gst_config:
+        #     sgst_amount = amount * (gst_config[0]['sgst_rate']/100)
+        #     cgst_amount = amount * (gst_config[0]['cgst_rate']/100)
 
-    total_gst = sgst_amount + cgst_amount + igst_amount
-    
-    # Get referrer's promotional wallet
-    promotional_wallet_data = frappe.db.sql("""
-        SELECT name, balance FROM `tabPromotional Wallet`
-        WHERE user = %s AND is_active = 1
-    """, (user,), as_dict=True)
-
-    if not promotional_wallet_data:
-        frappe.throw(f"No active promotional wallet found for {ruser}")
-
-    # Add referrer reward to wallet
-    new_balance = promotional_wallet_data[0]["balance"] + total_gst
-
-    frappe.db.set_value("Promotional Wallet", promotional_wallet_data[0]["name"], "balance", new_balance)
-
-    # Get referrer's promotional wallet
-    wallet_data = frappe.db.sql("""
-        SELECT name, balance FROM `tabUser Wallet`
-        WHERE user = %s AND is_active = 1
-    """, (user,), as_dict=True)
-
-    if not wallet_data:
-        frappe.throw(f"No active user wallet found for {ruser}")
-
-    wallet_name = promotional_wallet_data[0]["name"]
-    available_balance = promotional_wallet_data[0]["balance"]
-
-    # Add referrer reward to wallet
-    new_wallet_balance = available_balance - total_gst
-
-    frappe.db.set_value("User Wallet", wallet_name, "balance", new_wallet_balance)
-
+        gst_rate = 28
+        total_gst = round(amount - (amount * (100/ (100 + gst_rate))),2)
         
+        # Get referrer's promotional wallet
+        wallet_balance = frappe.db.get_value("Promotional Wallet",user,'balance')
+        new_balance = wallet_balance + total_gst
+
+        frappe.db.set_value("Promotional Wallet", user, "balance", new_balance)
+
+        available_balance = frappe.db.get_value("User Wallet",user,'balance')
+
+        # Add referrer reward to wallet
+        new_wallet_balance = available_balance + amount - total_gst
+
+        frappe.db.set_value("User Wallet", user, "balance", new_wallet_balance)
+
+        return {
+            "message":"Wallet recharge successfully",
+            "gst":total_gst,
+            "amount": round(amount - total_gst,2)
+        }
+    except Exception as e:
+        frappe.log_error("Error in wallet recharge",str(e))
+        frappe.throw(f"Error in wallet recharge {str(e)}")
+    

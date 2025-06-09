@@ -27,50 +27,52 @@ def update_profile(user, token):
 
 def send_sms(mobile_number, otp):
     try:
-        url = "https://graph.facebook.com/v18.0/692630890593436/messages"
+        # url = "https://graph.facebook.com/v18.0/692630890593436/messages"
         
-        payload = {
-            "messaging_product": "whatsapp",
-            "to": f"91{mobile_number}",
-            "type": "template",
-            "template": {
-                "name": "otp_default",
-                "language": {
-                    "code": "en_US"
-                },
-                "components": [
-                    {
-                        "type": "body",
-                        "parameters": [
-                            {
-                            "type": "text",
-                            "text": f"{otp}"
-                            }
-                        ]
-                    },
-                    {
-                        "type": "button",
-                        "sub_type": "url",
-                        "index": "0",
-                        "parameters": [
-                            {
-                            "type": "text",
-                            "text": f"{otp}"
-                            }
-                        ]
-                    }
-                ]
-            }
-        }
+        # payload = {
+        #     "messaging_product": "whatsapp",
+        #     "to": f"91{mobile_number}",
+        #     "type": "template",
+        #     "template": {
+        #         "name": "otp_default",
+        #         "language": {
+        #             "code": "en_US"
+        #         },
+        #         "components": [
+        #             {
+        #                 "type": "body",
+        #                 "parameters": [
+        #                     {
+        #                     "type": "text",
+        #                     "text": f"{otp}"
+        #                     }
+        #                 ]
+        #             },
+        #             {
+        #                 "type": "button",
+        #                 "sub_type": "url",
+        #                 "index": "0",
+        #                 "parameters": [
+        #                     {
+        #                     "type": "text",
+        #                     "text": f"{otp}"
+        #                     }
+        #                 ]
+        #             }
+        #         ]
+        #     }
+        # }
         
-        headers = {
-            "Authorization": "Bearer EAAOx688nrSwBO127r48JRoRHfmc8yLEGjnH3Wpmk2S6iWNDzm7QTxEfMJFctGRNGyTaEg9GcrqgHXg58NbyVybkYFNQZBmiBsiSdwDM4aXAZCjDxmBXLz3yVT7h0Hw1zVhWvc7sIrnC68aQW7nGMmSqCfVZAxKlirPJTiPkE6kzpsiszOuhnemf37Q5nv4H",
-            "Content-Type": "application/json"
-        }
+        # headers = {
+        #     "Authorization": "Bearer EAAOx688nrSwBO127r48JRoRHfmc8yLEGjnH3Wpmk2S6iWNDzm7QTxEfMJFctGRNGyTaEg9GcrqgHXg58NbyVybkYFNQZBmiBsiSdwDM4aXAZCjDxmBXLz3yVT7h0Hw1zVhWvc7sIrnC68aQW7nGMmSqCfVZAxKlirPJTiPkE6kzpsiszOuhnemf37Q5nv4H",
+        #     "Content-Type": "application/json"
+        # }
         
-        # Add timeout to prevent hanging connections
-        response = requests.post(url, json=payload, headers=headers, timeout=15)
+        # # Add timeout to prevent hanging connections
+        # response = requests.post(url, json=payload, headers=headers, timeout=15)
+        url = f"https://api.authkey.io/request?authkey=3c848188d9d7d131&mobile={mobile_number}&country_code=+91&sid=24388&name=Twinkle&otp={otp}&company=ONO"
         
+        response = requests.post(url)
         if response.status_code == 200:
             frappe.logger().info(f"SMS sent successfully to {mobile_number}")
             return True
@@ -98,7 +100,7 @@ def generate_mobile_otp(mobile_number):
 
     # Generate 6-digit OTP
     otp = ''.join(random.choice('0123456789') for _ in range(6))
-    
+    # otp = 679845
     # Set expiry (e.g., 10 minutes from now)
     expiry = frappe.utils.now_datetime() + datetime.timedelta(minutes=10)
 
@@ -386,3 +388,79 @@ def check_referral(user_id,referral_code):
         }
     except Exception as e:
         frappe.throw(f"Registration failed: {str(e)}")
+
+@frappe.whitelist(allow_guest=True)
+def get_markets():
+    try:
+        """
+        Ultra-optimized version using nested set model queries.
+        Returns flat array with children data pre-populated.
+        """
+        query = """
+        SELECT 
+            parent.name,
+            parent.question,
+            parent.category,
+            parent.status,
+            parent.closing_time,
+            parent.end_result,
+            parent.total_investment,
+            parent.total_traders,
+            parent.yes_price,
+            parent.no_price,
+            parent.max_allowed_quantity,
+            parent.closing_value,
+            parent.yes_color,
+            parent.yes_side_label,
+            parent.no_color,
+            parent.no_side_label,
+            parent.parent_market,
+            parent.is_group,
+            parent.creation,
+            parent.modified,
+            GROUP_CONCAT(
+                CASE WHEN child.parent_market = parent.name 
+                THEN CONCAT(
+                    '{"name":"', child.name, '",',
+                    '"question":"', REPLACE(child.question, '"', '\\"'), '",',
+                    '"status":"', child.status, '",',
+                    '"yes_price":', IFNULL(child.yes_price, 0), ',',
+                    '"no_price":', IFNULL(child.no_price, 0), '}'
+                ) END
+                SEPARATOR ','
+            ) as children_json
+        FROM 
+            `tabMarket` parent
+        LEFT JOIN 
+            `tabMarket` child ON child.parent_market = parent.name AND child.docstatus = 0
+        WHERE 
+            parent.docstatus = 0
+        GROUP BY 
+            parent.name, parent.question, parent.category, parent.status,
+            parent.closing_time, parent.lft, parent.rgt
+        ORDER BY 
+            parent.lft ASC
+        """
+        
+        markets = frappe.db.sql(query, as_dict=True)
+        
+        # Parse children JSON
+        for market in markets:
+            if market.get("children_json"):
+                try:
+                    children_data = f"[{market['children_json']}]"
+                    market["children"] = frappe.parse_json(children_data)
+                except:
+                    market["children"] = []
+            else:
+                market["children"] = []
+            
+            market["children_count"] = len(market["children"])
+            market["has_children"] = market["children_count"] > 0
+            # Remove the JSON string as it's no longer needed
+            market.pop("children_json", None)
+        
+        return markets
+    except Exception as e:
+        frappe.log_error(str(e), "Error in get_market")
+        frappe.throw(f"Error in getting market: {str(e)}")

@@ -165,6 +165,7 @@ api = {
         "rewardapp.api.update_profile",
         "rewardapp.api.check_password_strength",
         "rewardapp.api.check_referral",
+        "rewardapp.api.get_markets",
         "rewardapp.wallet.get_balance",
         "rewardapp.wallet.recharge_wallet",
         "rewardapp.engine.update_order",
