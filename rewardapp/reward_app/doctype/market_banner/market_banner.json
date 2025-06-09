@@ -7,15 +7,14 @@
  "field_order": [
   "image",
   "column_break_jmvy",
-  "image_url",
-  "column_break_cdwp",
   "news",
   "news_position",
+  "column_break_cdwp",
   "offer",
+  "offer_position",
   "column_break_xwsa",
   "home",
-  "home_position",
-  "offer_position"
+  "home_position"
  ],
  "fields": [
   {
@@ -26,11 +25,6 @@
   {
    "fieldname": "column_break_jmvy",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "image_url",
-   "fieldtype": "Data",
-   "label": "Image URL"
   },
   {
    "default": "0",
@@ -80,7 +74,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-10 13:25:18.303575",
+ "modified": "2025-06-09 12:51:00.671012",
  "modified_by": "Administrator",
  "module": "Reward App",
  "name": "Market Banner",

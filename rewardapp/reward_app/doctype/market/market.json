@@ -1,237 +1,244 @@
 {
-  "actions": [],
-  "allow_auto_repeat": 1,
-  "allow_rename": 1,
-  "autoname": "format:ONO_MARKET_{####}",
-  "creation": "2025-03-26 12:51:45.060449",
-  "doctype": "DocType",
-  "engine": "InnoDB",
-  "field_order": [
-    "market_detail_section",
-    "question",
-    "category",
-    "end_result",
-    "status",
-    "total_investment",
-    "best_bid",
-    "closing_value",
-    "column_break_sgfb",
-    "closing_time",
-    "yes_price",
-    "no_price",
-    "total_traders",
-    "best_ask",
-    "max_allowed_quantity",
-    "ui_detail_section",
-    "yes_color",
-    "yes_side_label",
-    "column_break_aliq",
-    "no_color",
-    "no_side_label",
-    "lft",
-    "rgt",
-    "is_group",
-    "old_parent",
-    "parent_market"
-  ],
-  "fields": [
-    {
-      "fieldname": "question",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "Question",
-      "reqd": 1
-    },
-    {
-      "depends_on": "eval: doc.status == 'RESOLVED'",
-      "fieldname": "end_result",
-      "fieldtype": "Data",
-      "in_list_view": 1,
-      "label": "End Result"
-    },
-    {
-      "fieldname": "column_break_sgfb",
-      "fieldtype": "Column Break"
-    },
-    {
-      "fieldname": "closing_time",
-      "fieldtype": "Datetime",
-      "in_list_view": 1,
-      "label": "Closing Time",
-      "reqd": 1
-    },
-    {
-      "default": "5.00",
-      "fieldname": "yes_price",
-      "fieldtype": "Float",
-      "label": "Yes Price"
-    },
-    {
-      "default": "5.00",
-      "fieldname": "no_price",
-      "fieldtype": "Float",
-      "label": "No Price"
-    },
-    {
-      "fieldname": "status",
-      "fieldtype": "Select",
-      "in_list_view": 1,
-      "label": "Status",
-      "options": "OPEN\nPAUSED\nCLOSED\nCANCELED\nRESOLVED"
-    },
-    {
-      "fieldname": "category",
-      "fieldtype": "Link",
-      "in_list_view": 1,
-      "label": "Category",
-      "options": "Market Category",
-      "reqd": 1
-    },
-    {
-      "default": "0",
-      "fieldname": "total_traders",
-      "fieldtype": "Int",
-      "label": "Total Traders"
-    },
-    {
-      "default": "0",
-      "fieldname": "total_investment",
-      "fieldtype": "Float",
-      "label": "Total Investment"
-    },
-    {
-      "default": "5",
-      "fieldname": "max_allowed_quantity",
-      "fieldtype": "Int",
-      "label": "Max Allowed Quantity"
-    },
-    {
-      "default": "0",
-      "fieldname": "best_bid",
-      "fieldtype": "Float",
-      "label": "Best Bid"
-    },
-    {
-      "default": "10",
-      "fieldname": "best_ask",
-      "fieldtype": "Float",
-      "label": "Best Ask"
-    },
-    {
-      "fieldname": "yes_color",
-      "fieldtype": "Data",
-      "label": "Yes Color"
-    },
-    {
-      "fieldname": "no_color",
-      "fieldtype": "Data",
-      "label": "No Color"
-    },
-    {
-      "default": "YES",
-      "fieldname": "yes_side_label",
-      "fieldtype": "Data",
-      "label": "Yes Side Label"
-    },
-    {
-      "default": "NO",
-      "fieldname": "no_side_label",
-      "fieldtype": "Data",
-      "label": "No Side Label"
-    },
-    {
-      "fieldname": "market_detail_section",
-      "fieldtype": "Section Break",
-      "label": "Market Detail"
-    },
-    {
-      "fieldname": "ui_detail_section",
-      "fieldtype": "Section Break",
-      "label": "UI Detail"
-    },
-    {
-      "fieldname": "column_break_aliq",
-      "fieldtype": "Column Break"
-    },
-    {
-      "depends_on": "eval: doc.category == 'Crypto' && doc.status == 'RESOLVED'",
-      "fieldname": "closing_value",
-      "fieldtype": "Float",
-      "label": "Closing Value"
-    },
-    {
-      "fieldname": "lft",
-      "fieldtype": "Int",
-      "hidden": 1,
-      "label": "Left",
-      "no_copy": 1,
-      "read_only": 1
-    },
-    {
-      "fieldname": "rgt",
-      "fieldtype": "Int",
-      "hidden": 1,
-      "label": "Right",
-      "no_copy": 1,
-      "read_only": 1
-    },
-    {
-      "fieldname": "is_group",
-      "fieldtype": "Check",
-      "label": "Is Group"
-    },
-    {
-      "fieldname": "old_parent",
-      "fieldtype": "Link",
-      "label": "Old Parent",
-      "options": "Market"
-    },
-    {
-      "fieldname": "parent_market",
-      "fieldtype": "Link",
-      "ignore_user_permissions": 1,
-      "label": "Parent Market",
-      "options": "Market"
-    }
-  ],
-  "index_web_pages_for_search": 1,
-  "is_tree": 1,
-  "links": [],
-  "modified": "2025-06-05 12:19:41.389395",
-  "modified_by": "Administrator",
-  "module": "Reward App",
-  "name": "Market",
-  "naming_rule": "Expression",
-  "nsm_parent_field": "parent_market",
-  "owner": "Administrator",
-  "permissions": [
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "write": 1
-    },
-    {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "Trader",
-      "share": 1,
-      "write": 1
-    }
-  ],
-  "row_format": "Dynamic",
-  "sort_field": "modified",
-  "sort_order": "DESC",
-  "states": []
+ "actions": [],
+ "allow_auto_repeat": 1,
+ "allow_rename": 1,
+ "autoname": "format:ONO_MARKET_{####}",
+ "creation": "2025-03-26 12:51:45.060449",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "market_detail_section",
+  "icon",
+  "question",
+  "category",
+  "end_result",
+  "status",
+  "total_investment",
+  "best_bid",
+  "closing_value",
+  "column_break_sgfb",
+  "closing_time",
+  "yes_price",
+  "no_price",
+  "total_traders",
+  "best_ask",
+  "max_allowed_quantity",
+  "ui_detail_section",
+  "yes_color",
+  "yes_side_label",
+  "column_break_aliq",
+  "no_color",
+  "no_side_label",
+  "lft",
+  "rgt",
+  "is_group",
+  "old_parent",
+  "parent_market"
+ ],
+ "fields": [
+  {
+   "fieldname": "question",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Question",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval: doc.status == 'RESOLVED'",
+   "fieldname": "end_result",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "End Result"
+  },
+  {
+   "fieldname": "column_break_sgfb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "closing_time",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Closing Time",
+   "reqd": 1
+  },
+  {
+   "default": "5.00",
+   "fieldname": "yes_price",
+   "fieldtype": "Float",
+   "label": "Yes Price"
+  },
+  {
+   "default": "5.00",
+   "fieldname": "no_price",
+   "fieldtype": "Float",
+   "label": "No Price"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "OPEN\nPAUSED\nCLOSED\nCANCELED\nRESOLVED"
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Category",
+   "options": "Market Category",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_traders",
+   "fieldtype": "Int",
+   "label": "Total Traders"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_investment",
+   "fieldtype": "Float",
+   "label": "Total Investment"
+  },
+  {
+   "default": "5",
+   "fieldname": "max_allowed_quantity",
+   "fieldtype": "Int",
+   "label": "Max Allowed Quantity"
+  },
+  {
+   "default": "0",
+   "fieldname": "best_bid",
+   "fieldtype": "Float",
+   "label": "Best Bid"
+  },
+  {
+   "default": "10",
+   "fieldname": "best_ask",
+   "fieldtype": "Float",
+   "label": "Best Ask"
+  },
+  {
+   "fieldname": "yes_color",
+   "fieldtype": "Data",
+   "label": "Yes Color"
+  },
+  {
+   "fieldname": "no_color",
+   "fieldtype": "Data",
+   "label": "No Color"
+  },
+  {
+   "default": "YES",
+   "fieldname": "yes_side_label",
+   "fieldtype": "Data",
+   "label": "Yes Side Label"
+  },
+  {
+   "default": "NO",
+   "fieldname": "no_side_label",
+   "fieldtype": "Data",
+   "label": "No Side Label"
+  },
+  {
+   "fieldname": "market_detail_section",
+   "fieldtype": "Section Break",
+   "label": "Market Detail"
+  },
+  {
+   "fieldname": "ui_detail_section",
+   "fieldtype": "Section Break",
+   "label": "UI Detail"
+  },
+  {
+   "fieldname": "column_break_aliq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval: doc.category == 'Crypto' && doc.status == 'RESOLVED'",
+   "fieldname": "closing_value",
+   "fieldtype": "Float",
+   "label": "Closing Value"
+  },
+  {
+   "fieldname": "lft",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Left",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "rgt",
+   "fieldtype": "Int",
+   "hidden": 1,
+   "label": "Right",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "is_group",
+   "fieldtype": "Check",
+   "label": "Is Group"
+  },
+  {
+   "fieldname": "old_parent",
+   "fieldtype": "Link",
+   "label": "Old Parent",
+   "options": "Market"
+  },
+  {
+   "fieldname": "parent_market",
+   "fieldtype": "Link",
+   "ignore_user_permissions": 1,
+   "label": "Parent Market",
+   "options": "Market"
+  },
+  {
+   "fieldname": "icon",
+   "fieldtype": "Attach",
+   "label": "Icon"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_tree": 1,
+ "links": [],
+ "modified": "2025-06-09 13:20:55.911074",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Market",
+ "naming_rule": "Expression",
+ "nsm_parent_field": "parent_market",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
 }

@@ -8,22 +8,15 @@ def create_transaction_log(doc):
         user_id = doc.user_id
         total_amount = doc.amount * doc.quantity
 
-        promotional_wallet_data = frappe.db.sql("""
-            SELECT name, balance FROM `tabPromotional Wallet`
-            WHERE user = %s AND is_active = 1
-        """, (user_id,), as_dict=True)
+        promo_balance = frappe.db.get_value("Promotional Wallet",user_id, 'balance')
+        main_balance = frappe.db.get_value("User Wallet",user_id, 'balance')
 
-        wallet_data = frappe.db.sql("""
-            SELECT name, balance FROM `tabUser Wallet`
-            WHERE user = %s AND is_active = 1
-        """, (user_id,), as_dict=True)
-
-        if promotional_wallet_data[0]["balance"] + wallet_data[0]["balance"] < total_amount:
+        if promo_balance + main_balance < total_amount:
             raise Exception("Insufficient Balance")
             
-        if promotional_wallet_data and promotional_wallet_data[0]["balance"] > 0:
-            wallet_balance = promotional_wallet_data[0]["balance"]
-            wallet_name = promotional_wallet_data[0]["name"]
+        if promo_balance > 0:
+            wallet_balance = promo_balance
+            wallet_name = user_id
             transaction_amount = min(wallet_balance, total_amount)
 
             frappe.get_doc({
@@ -41,18 +34,12 @@ def create_transaction_log(doc):
             total_amount -= transaction_amount
             new_wallet_balance = wallet_balance - transaction_amount
 
-            frappe.db.sql("""
-                UPDATE `tabPromotional Wallet`
-                SET balance = %s
-                WHERE name = %s
-            """, (new_wallet_balance, wallet_name))
+            frappe.db.set_value("Promotional Wallet", user_id, "balance", new_wallet_balance)
 
         if total_amount > 0:
-            if not wallet_data:
-                frappe.throw(f"No active wallet found for {user_id}")
 
-            wallet_name = wallet_data[0]["name"]
-            available_balance = wallet_data[0]["balance"]
+            wallet_name = user_id
+            available_balance = main_balance
 
             frappe.get_doc({
                 'doctype': "Transaction Logs",
@@ -68,11 +55,7 @@ def create_transaction_log(doc):
 
             new_balance = available_balance - total_amount
 
-            frappe.db.sql("""
-                UPDATE `tabUser Wallet`
-                SET balance = %s
-                WHERE name = %s
-            """, (new_balance, wallet_name))
+            frappe.db.set_value("User Wallet", user_id, "balance", new_balance)
 
     except Exception as e:
         frappe.log_error("Error in creating transaction log", str(e))
