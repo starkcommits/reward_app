@@ -70,7 +70,7 @@ def send_sms(mobile_number, otp):
         
         # # Add timeout to prevent hanging connections
         # response = requests.post(url, json=payload, headers=headers, timeout=15)
-        url = f"https://api.authkey.io/request?authkey=3c848188d9d7d131&mobile={mobile_number}&country_code=+91&sid=24388&name=Twinkle&otp={otp}&company=ONO"
+        url = f"https://api.authkey.io/request?authkey=3c848188d9d7d131&country_code=+91&sid=24615&var={otp}&mobile={mobile_number}"
         
         response = requests.post(url)
         if response.status_code == 200:
