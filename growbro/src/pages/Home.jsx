@@ -30,6 +30,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import ONOIcon from '@/assets/ono_icon_text.png'
 
 import scrollbarHide from 'tailwind-scrollbar-hide'
 import _ from 'lodash'
@@ -261,7 +262,9 @@ const Home = () => {
               >
                 <Menu className="h-5 w-5 text-gray-700" />
               </button>
-              <h1 className="text-xl font-semibold text-indigo-600">ONO</h1>
+              <div className="text-xl font-semibold text-indigo-600">
+                <img src={ONOIcon} className="w-20 h-8" alt="" />
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <button
