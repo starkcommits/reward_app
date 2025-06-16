@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { data, useNavigate } from 'react-router-dom'
 import {
   Bell,
@@ -22,8 +22,17 @@ import {
   useFrappeGetCall,
   useFrappeDocTypeEventListener,
 } from 'frappe-react-sdk'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 import scrollbarHide from 'tailwind-scrollbar-hide'
+import _ from 'lodash'
 
 const categoryIcons = {
   Sports: (
@@ -131,15 +140,13 @@ const Home = () => {
       filters: [['is_active', '=', 1]],
     })
 
-  const { data: marketingBanner, isLoading: marketingBannerLoading } =
+  const { data: marketingBannerData, isLoading: marketingBannerLoading } =
     useFrappeGetDocList('Market Banner', {
-      fields: ['name', 'image_url', 'home_position'],
+      fields: ['name', 'image', 'home_position'],
       filters: [['home', '=', true]],
     })
 
-  console.log('MArket Banner ', marketingBanner)
-
-  console.log(marketCategories)
+  console.log(marketingBannerData)
 
   const {
     data: marketData,
@@ -205,6 +212,19 @@ const Home = () => {
   const handleCategoryClick = (category) => {
     navigate(`/category/${category}`)
   }
+
+  const createAutoplayPlugin = (delay) =>
+    Autoplay({
+      delay: delay,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      stopOnFocusIn: true,
+    })
+
+  const bannerPlugin = useRef(createAutoplayPlugin(2000))
+  const trending1 = useRef(createAutoplayPlugin(1500))
+  const trending2 = useRef(createAutoplayPlugin(2500))
+  const trending3 = useRef(createAutoplayPlugin(3000))
 
   if (marketDataLoading) {
     return (
@@ -289,24 +309,72 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="relative rounded-2xl overflow-hidden">
+        <div className="w-full relative z-[1] rounded-xl">
+          <Carousel className="w-full" plugins={[bannerPlugin.current]}>
+            <CarouselContent>
+              <CarouselItem className="basis-full">
+                <div className="p-1 w-full">
+                  {marketingBannerData?.map((_, index) => {
+                    if (_.home_position === 0)
+                      return (
+                        <img
+                          src={_?.image}
+                          alt=""
+                          className="w-full rounded-xl"
+                        />
+                      )
+                  })}
+                </div>
+              </CarouselItem>
+              <CarouselItem className="basis-full">
+                <div className="p-1 w-full">
+                  {marketingBannerData?.map((_, index) => {
+                    if (_.home_position === 1)
+                      return (
+                        <img
+                          src={_?.image}
+                          alt=""
+                          className="w-full rounded-xl"
+                        />
+                      )
+                  })}
+                </div>
+              </CarouselItem>
+              <CarouselItem className="basis-full">
+                <div className="p-1 w-full">
+                  {marketingBannerData?.map((_, index) => {
+                    if (_.home_position === 2)
+                      return (
+                        <img
+                          src={_?.image}
+                          alt=""
+                          className="w-full rounded-xl"
+                        />
+                      )
+                  })}
+                </div>
+              </CarouselItem>
+            </CarouselContent>
+          </Carousel>
+        </div>
+
+        {/* <div className="relative rounded-2xl overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
           <img
             src={
-              marketingBanner?.find((item) => item.home_position === 1)
-                ?.image_url
+              marketingBanner?.find((item) => item.home_position === 1)?.image
             }
             alt="IT20L"
             className="w-full h-40 object-cover"
           />
-          {/* <div className="absolute bottom-4 left-4 z-20 text-white">
+          <div className="absolute bottom-4 left-4 z-20 text-white">
             <h3 className="text-xl font-semibold mb-2">IT20 League 2024</h3>
             <div className="inline-flex items-center bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full text-sm">
               <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse mr-2"></div>
               Events live at 7:30 PM today
             </div>
-          </div> */}
-        </div>
+          </div>
+        </div> */}
 
         <div>
           <div className="flex items-center justify-between mb-6">
