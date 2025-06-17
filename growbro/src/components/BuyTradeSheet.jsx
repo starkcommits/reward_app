@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import { DittofeedSdk } from '@dittofeed/sdk-web'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -43,7 +43,7 @@ const BuyTradeSheet = ({
   isSheetOpen,
   setIsSheetOpen,
 }) => {
-  const [selectedDateTime, setSelectedDateTime] = useState(null)  
+  const [selectedDateTime, setSelectedDateTime] = useState(null)
   const { createDoc, isLoading: createDocLoading } = useFrappeCreateDoc()
 
   const { currentUser } = useFrappeAuth()
@@ -93,6 +93,7 @@ const BuyTradeSheet = ({
         market_id: marketId,
         order_type: 'BUY',
         quantity: quantity,
+        user_id: currentUser,
         opinion_type: choice,
         amount: price,
         sell_order_id: '',
@@ -116,6 +117,21 @@ const BuyTradeSheet = ({
       }
 
       await createDoc('Orders', orderData)
+
+      DittofeedSdk.track({
+        event: 'Buy Order Placed',
+        userId: currentUser,
+        properties: {
+          market_id: marketId,
+          opinion_type: choice,
+          price,
+          quantity,
+          stop_loss_enabled: stopLossEnabled,
+          book_profit_enabled: bookProfitEnabled,
+          auto_cancel_enabled: autoCancelEnabled,
+          timestamp: new Date().toISOString(),
+        },
+      })
 
       toast.success(`Buy Order Placed.`)
 

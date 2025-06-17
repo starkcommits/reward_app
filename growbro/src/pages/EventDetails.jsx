@@ -163,8 +163,8 @@ const EventDetails = () => {
       <div className="px-4 py-4">
         {/* ... existing content ... */}
         <div className="flex flex-col items-center mb-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
-            <span className="text-3xl text-white">₿</span>
+          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4">
+            <img src={market?.icon} alt="" />
           </div>
           <h2 className="text-xl text-center font-medium mb-4 px-6">
             {market?.question}

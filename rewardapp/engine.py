@@ -256,7 +256,7 @@ def market(doc, method):
             # For debugging
             frappe.logger().info(f"Sending payload to market engine: {payload}")
             
-            url = "http://94.136.187.188:8086/markets/"
+            url = "http://127.0.0.1:8086/markets/"
             response = requests.post(url, json=payload)
             
             if response.status_code != 201:
@@ -291,7 +291,7 @@ def market(doc, method):
                 order_doc.save()  # Triggers hooks
 
             frappe.db.commit()
-            url=f"http://94.136.187.188:8086/markets/{doc.name}/close"
+            url=f"http://127.0.0.1:8086/markets/{doc.name}/close"
             response = requests.post(url)
                 
             if response.status_code != 200:
@@ -732,7 +732,7 @@ def holding(doc,method):
 
         # API call to sync order update
         try:
-            url = "http://94.136.187.188:8086/orders/update_quantity"
+            url = "http://127.0.0.1:8086/orders/update_quantity"
             response = requests.put(url, json=payload)
             if response.status_code != 201:
                 frappe.log_error(f"Error response: {response.text}")
@@ -885,7 +885,7 @@ def update_order_price(user_id, order_id, price):
             "new_price": price
         }
         try:
-            url = "http://94.136.187.188:8086/orders/update_price"
+            url = "http://127.0.0.1:8086/orders/update_price"
             response = requests.put(url, json=payload)
             
             if response.status_code != 201:

@@ -49,6 +49,7 @@ import { useFrappeDeleteDoc } from 'frappe-react-sdk'
 import toast from 'react-hot-toast'
 import ExitHoldingsDialog from './ExitHoldingsDialog'
 import CancelHoldingsDialog from './CancelHoldingsDialog'
+import { DittofeedSdk } from '@dittofeed/sdk-web'
 
 const ActivePositions = ({ position, refetchActiveHoldings }) => {
   const navigate = useNavigate()
@@ -59,7 +60,7 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
   const [yesPrice, setYesPrice] = useState(position.yes_price)
   const [noPrice, setNoPrice] = useState(position.no_price)
 
-  console.log(position)
+  console.log('Position     ASDas', position)
 
   const { currentUser } = useFrappeAuth()
   const { createDoc } = useFrappeCreateDoc()
@@ -152,6 +153,20 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
           filled_quantity: 0,
           order_type: 'SELL',
         })
+        DittofeedSdk.track({
+          event: 'Sell Order Placed',
+          userId: currentUser,
+          properties: {
+            userId: currentUser,
+            market_id: position.market_id,
+            opinion_type: 'YES',
+            quantity:
+              position?.ACTIVE?.YES?.total_quantity -
+              position?.ACTIVE?.YES?.total_filled_quantity,
+            amount: yesPrice,
+            timestamp: new Date().toISOString(),
+          },
+        })
       }
       if (position?.ACTIVE?.NO?.total_quantity > 0 && noEnabled) {
         console.log('No')
@@ -166,6 +181,20 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
           amount: noPrice,
           filled_quantity: 0,
           order_type: 'SELL',
+        })
+        DittofeedSdk.track({
+          event: 'Sell Order Placed',
+          userId: currentUser,
+          properties: {
+            userId: currentUser,
+            market_id: position.market_id,
+            opinion_type: 'NO',
+            quantity:
+              position?.ACTIVE?.NO?.total_quantity -
+              position?.ACTIVE?.NO?.total_filled_quantity,
+            amount: noPrice,
+            timestamp: new Date().toISOString(),
+          },
         })
       }
       refetchActiveHoldings()
@@ -230,7 +259,8 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
               {position.question}
             </span>
           </div>
-          {'EXITING' in position ? null : (
+          {console.log('ASdsadas', 'EXITING' in position)}
+          {'ACTIVE' in position ? (
             <div className="flex justify-between gap-4 text-sm mb-4">
               <div>
                 <div className="text-gray-600 font-medium">Invested</div>
@@ -256,7 +286,7 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
                 </div>
               </div>
             </div>
-          )}
+          ) : null}
         </div>
 
         <div className="w-full flex items-center justify-between cursor-default">
@@ -301,12 +331,13 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
                 position={position}
                 handleCancelOrders={handleCancelOrders}
               />
-            ) : (
+            ) : null}
+            {'ACTIVE' in position ? (
               <ExitHoldingsDialog
                 position={position}
                 handleExitPositions={handleExitPositions}
               />
-            )}
+            ) : null}
           </div>
         </div>
       </div>

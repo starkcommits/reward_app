@@ -56,8 +56,6 @@ ChartJS.register(
 
 const OrdersTab = () => {
   const { id } = useParams()
-  const location = useLocation()
-  const searchParams = new URLSearchParams(location.search)
   const [activeOrders, setActiveOrders] = useState({})
   const { currentUser, isLoading } = useFrappeAuth()
 

@@ -72,6 +72,7 @@ import {
   useFrappeGetDocList,
   useFrappePostCall,
   useFrappeUpdateDoc,
+  useSWRConfig,
 } from 'frappe-react-sdk'
 import ActivePosition from '../components/ActivePositions'
 import CompletedTrades from '../components/CompletedTrades'
@@ -82,6 +83,7 @@ import { Slider } from '@/components/ui/slider'
 import toast from 'react-hot-toast'
 import CancelHoldingDialog from '../components/CancelHoldingDialog'
 import SellTradeSheet from '../components/SellTradeSheet'
+import { DittofeedSdk } from '@dittofeed/sdk-web'
 
 ChartJS.register(
   CategoryScale,
@@ -97,6 +99,7 @@ ChartJS.register(
 const ActiveMarketHolding = () => {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { mutate } = useSWRConfig()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const tab = searchParams.get('tab')
@@ -191,9 +194,7 @@ const ActiveMarketHolding = () => {
         ['market_id', '=', id],
       ],
     },
-    currentUser && tab === 'all'
-      ? ['HoldingList', 'all', tab, currentUser, id]
-      : null
+    currentUser && tab === 'all' ? ['get_all_holdings'] : null
   )
 
   const {
@@ -222,9 +223,7 @@ const ActiveMarketHolding = () => {
         ['status', '=', 'ACTIVE'],
       ],
     },
-    currentUser && tab === 'matched'
-      ? ['HoldingList', 'matched', tab, currentUser, id]
-      : null
+    currentUser && tab === 'matched' ? ['get_matched_holdings'] : null
   )
 
   const {
@@ -254,9 +253,7 @@ const ActiveMarketHolding = () => {
         ['status', '=', 'EXITING'],
       ],
     },
-    currentUser && tab === 'exiting'
-      ? ['HoldingList', 'exiting', tab, currentUser, id]
-      : null
+    currentUser && tab === 'exiting' ? ['get_exiting_holdings'] : null
   )
   const {
     data: exitedHoldingData,
@@ -487,6 +484,17 @@ const ActiveMarketHolding = () => {
           filled_quantity: 0,
           order_type: 'SELL',
         })
+        DittofeedSdk.track({
+          event: 'Sell Order Placed',
+          userId: currentUser,
+          properties: {
+            market_id: id,
+            opinion_type: 'YES',
+            quantity: totalExitData?.message?.YES,
+            amount: yesPrice,
+            timestamp: new Date().toISOString(),
+          },
+        })
       }
 
       if (totalExitData?.message?.NO > 0 && noEnabled) {
@@ -499,6 +507,17 @@ const ActiveMarketHolding = () => {
           amount: noPrice,
           filled_quantity: 0,
           order_type: 'SELL',
+        })
+        DittofeedSdk.track({
+          event: 'Sell Order Placed',
+          userId: currentUser,
+          properties: {
+            market_id: id,
+            opinion_type: 'NO',
+            quantity: totalExitData?.message?.NO,
+            amount: noPrice,
+            timestamp: new Date().toISOString(),
+          },
         })
       }
       refetchTotalExit()
@@ -535,8 +554,27 @@ const ActiveMarketHolding = () => {
           status: 'ACTIVE',
         })
       }
+      DittofeedSdk.track({
+        userId: currentUser,
+        event: 'Order Cancelled',
+        properties: {
+          order_id: order_id,
+          market_id: sellOrder.message.market_id,
+          opinion_type: sellOrder.message.opinion_type,
+          amount: sellOrder.message.amount,
+          quantity: sellOrder.message.quantity,
+          timestamp: new Date().toISOString(),
+        },
+      })
+
+      if (activeTab === 'exiting')
+        mutate((key) => Array.isArray(key) && key[0] === 'get_exiting_holdings')
+
+      if (activeTab === 'all')
+        mutate((key) => Array.isArray(key) && key[0] === 'get_all_holdings')
+
       toast.success('Order Canceled Successfully.')
-      refetcHoldingData()
+
       setIsCancelOpen(false)
     } catch (err) {
       console.log(err)
@@ -831,10 +869,7 @@ const ActiveMarketHolding = () => {
                       </span>
                       <div className="flex gap-1">
                         {position.status === 'ACTIVE' && (
-                          <SellTradeSheet
-                            position={position}
-                            refetcHoldingData={refetcHoldingData}
-                          />
+                          <SellTradeSheet position={position} type="all" />
                         )}
 
                         {position.filled_quantity >= 0 &&
@@ -969,28 +1004,10 @@ const ActiveMarketHolding = () => {
                         </span>
                         <div className="flex gap-1">
                           {position.status === 'ACTIVE' && (
-                            <span
-                              className="bg-yellow-100 text-yellow-700 rounded-xl p-1 text-xs text-[0.7rem] font-medium flex gap-1 "
-                              onClick={() =>
-                                handleTradeClick(
-                                  position.opinion_type === 'YES'
-                                    ? position.market_yes_price
-                                    : position.market_no_price,
-                                  position.opinion_type,
-                                  'SELL',
-                                  position.market_id,
-                                  position.quantity,
-                                  position.name
-                                )
-                              }
-                            >
-                              {position.status}
-                              <Separator
-                                orientation="vertical"
-                                className="w-0.5"
-                              />
-                              <LogOut className="w-4 h-4" />
-                            </span>
+                            <SellTradeSheet
+                              position={position}
+                              type="matched"
+                            />
                           )}
 
                           {position.filled_quantity >= 0 &&

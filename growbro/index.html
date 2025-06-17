@@ -33,51 +33,6 @@
 
       gtag('config', 'G-BTJD31LE98')
     </script>
-    <script type="text/javascript">
-      var _df = _df || []
-
-      ;(function () {
-        var methods = [
-          'track',
-          'identify',
-          'page',
-          'flush',
-          'subscribe',
-          'unsubscribe',
-          'getAnonymousId',
-          'resetAnonymousId',
-        ]
-        methods.forEach(function (method) {
-          _df[method] = function () {
-            _df.push([method].concat(Array.prototype.slice.call(arguments)))
-          }
-        })
-
-        var script = document.createElement('script')
-        script.type = 'module'
-        script.async = true
-
-        // If you're self-hosting the Dittofeed dashboard, you'll need to to
-        // specificy your own host.
-        script.src = 'https://onoapp.in/dashboard/public/dittofeed.umd.js'
-
-        script.id = 'df-tracker'
-        // Replace with your own write key found on: https://app.dittofeed.com/dashboard/settings
-        script.setAttribute(
-          'data-write-key',
-          'Basic MjczZGFhODgtYTcwOC00NThhLWI1NjQtOTNkNDc4N2VkN2EzOjk3OWZkMWJkZDEzODFkNTQ='
-        )
-        // If you're self-hosting dittofeed, you'll need to to specificy your own host.
-        // script.setAttribute('data-host', 'https://onoapp.in/dashboard')
-
-        document.head.appendChild(script)
-      })()
-
-      _df.identify({
-        userId: '123',
-        email: 'test@email.com',
-      })
-    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -157,6 +157,7 @@ const Home = () => {
     fields: [
       'name',
       'question',
+      'icon',
       'yes_price',
       'no_price',
       'closing_time',
@@ -248,8 +249,6 @@ const Home = () => {
 
   const isInWebView = isWebView()
 
-  console.log('asdasdas', isInWebView)
-
   return (
     <div className="">
       {isInWebView ? null : (
@@ -315,48 +314,39 @@ const Home = () => {
         <div className="w-full relative z-[1] rounded-xl">
           <Carousel className="w-full" plugins={[bannerPlugin.current]}>
             <CarouselContent>
-              <CarouselItem className="basis-full">
-                <div className="p-1 w-full">
-                  {marketingBannerData?.map((_, index) => {
-                    if (_.home_position === 0)
-                      return (
-                        <img
-                          src={_?.image}
-                          alt=""
-                          className="w-full rounded-xl"
-                        />
-                      )
-                  })}
-                </div>
-              </CarouselItem>
-              <CarouselItem className="basis-full">
-                <div className="p-1 w-full">
-                  {marketingBannerData?.map((_, index) => {
-                    if (_.home_position === 1)
-                      return (
-                        <img
-                          src={_?.image}
-                          alt=""
-                          className="w-full rounded-xl"
-                        />
-                      )
-                  })}
-                </div>
-              </CarouselItem>
-              <CarouselItem className="basis-full">
-                <div className="p-1 w-full">
-                  {marketingBannerData?.map((_, index) => {
-                    if (_.home_position === 2)
-                      return (
-                        <img
-                          src={_?.image}
-                          alt=""
-                          className="w-full rounded-xl"
-                        />
-                      )
-                  })}
-                </div>
-              </CarouselItem>
+              {marketingBannerData[0]?.home_position === 0 && (
+                <CarouselItem className="basis-full">
+                  <div className="p-1 w-full">
+                    <img
+                      src={marketingBannerData[0]?.image}
+                      alt=""
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                </CarouselItem>
+              )}
+              {marketingBannerData[1]?.home_position === 1 && (
+                <CarouselItem className="basis-full">
+                  <div className="p-1 w-full">
+                    <img
+                      src={marketingBannerData[1]?.image}
+                      alt=""
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                </CarouselItem>
+              )}
+              {marketingBannerData[2]?.home_position === 2 && (
+                <CarouselItem className="basis-full">
+                  <div className="p-1 w-full">
+                    <img
+                      src={marketingBannerData[2]?.image}
+                      alt=""
+                      className="w-full rounded-xl"
+                    />
+                  </div>
+                </CarouselItem>
+              )}
             </CarouselContent>
           </Carousel>
         </div>
@@ -439,32 +429,38 @@ const Home = () => {
                           </div>
                         </div>
                       </div> */}
-
                       <div className="p-4">
-                        <h3 className="text-base font-medium mb-2">
-                          {market.question}
-                        </h3>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="flex items-center text-xs text-gray-600">
-                            <Users className="h-3.5 w-3.5 mr-1" />
-                            <span>
-                              {market.total_traders.toLocaleString()} traders
+                        <div className="flex flex-col gap-1 ">
+                          <div className="w-full flex gap-4 justify-between">
+                            <h3 className="font-normal text-sm text-[#181818] w-[90%]">
+                              {market.question}
+                            </h3>
+                            <div className="w-[10%]">
+                              <img src={market.icon} className="h-8" alt="" />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center text-xs text-[#606060]">
+                              <Users className="h-3.5 w-3.5 mr-1" />
+                              <span>
+                                {market.total_traders.toLocaleString()} traders
+                              </span>
+                            </div>
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
+                              <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
+                              LIVE
                             </span>
                           </div>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
-                            <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
-                            LIVE
-                          </span>
-                        </div>
-                        {/* <p className="text-xs text-gray-600 mb-4">
+                          {/* <p className="text-xs text-gray-600 mb-4">
                           {market.info}
                         </p> */}
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="py-2 px-4 bg-green-50 text-green-600 rounded-xl text-sm font-medium">
-                            Yes ₹{market.yes_price}
-                          </div>
-                          <div className="py-2 px-4 bg-rose-50 text-rose-600 rounded-xl text-sm font-medium">
-                            No ₹{market.no_price}
+                          <div className="grid grid-cols-2 gap-3 mt-2.5">
+                            <div className="py-2 px-4 text-center bg-green-50 text-green-600 rounded-xl text-xs font-light">
+                              Yes ₹{market.yes_price}
+                            </div>
+                            <div className="py-2 px-4 text-center bg-rose-50 text-rose-600 rounded-xl text-xs font-light">
+                              No ₹{market.no_price}
+                            </div>
                           </div>
                         </div>
                       </div>

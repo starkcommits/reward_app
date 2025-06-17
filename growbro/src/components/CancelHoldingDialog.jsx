@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 
 const CancelHoldingDialog = ({ position, handleCancelOrder }) => {
   const [isCancelOpen, setIsCancelOpen] = useState(false)
-  
+
   return (
     <Dialog open={isCancelOpen} onOpenChange={setIsCancelOpen}>
       <DialogTrigger className="w-full">
