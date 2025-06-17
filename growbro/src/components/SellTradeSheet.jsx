@@ -19,6 +19,7 @@ import OrderBook from './OrderBook'
 import { useParams, useSearchParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useFrappeUpdateDoc } from 'frappe-react-sdk'
+import { useSWRConfig } from 'frappe-react-sdk'
 import {
   Accordion,
   AccordionContent,
@@ -26,8 +27,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 
-const SellTradeSheet = ({ position, refetcHoldingData }) => {
+const SellTradeSheet = ({ position, refetcHoldingData, type }) => {
   const { updateDoc } = useFrappeUpdateDoc()
+
+  const { mutate } = useSWRConfig()
 
   const [price, setPrice] = useState(
     position.opinion_type === 'YES'
@@ -45,9 +48,14 @@ const SellTradeSheet = ({ position, refetcHoldingData }) => {
         status: 'EXITING',
       })
 
-      toast.success(`Sell Order Placed.`)
 
-      refetcHoldingData()
+      if (type === 'all')
+        mutate((key) => Array.isArray(key) && key[0] === 'get_all_holdings')
+
+      if (type === 'matched')
+        mutate((key) => Array.isArray(key) && key[0] === 'get_matched_holdings')
+
+      toast.success(`Sell Order Placed.`)
 
       setIsDrawerOpen(false)
     } catch (err) {

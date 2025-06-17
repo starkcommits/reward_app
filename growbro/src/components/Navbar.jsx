@@ -21,7 +21,7 @@ const Navbar = ({ items }) => {
                 return navigate(`/portfolio?tab=active`)
               }
               if (item.path === '/wallet') {
-                return navigate(`/wallet?tab=all`)
+                return navigate(`/wallet`)
               }
               return navigate(item.path)
             }}

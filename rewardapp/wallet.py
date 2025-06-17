@@ -5,7 +5,7 @@ from frappe import _
 
 def create_transaction_log(doc):
     try:
-        user_id = doc.user_id
+        user_id = doc.user_id or frappe.session.user
         total_amount = doc.amount * doc.quantity
 
         promo_balance = frappe.db.get_value("Promotional Wallet",user_id, 'balance')
@@ -105,7 +105,7 @@ def wallet_operation(doc, method):
             frappe.db.commit()
 
             try:
-                url = "http://94.136.187.188:8086/orders/"
+                url = "http://127.0.0.1:8086/orders/"
                 response = requests.post(url, json=payload)
 
                 if response.status_code != 201:
@@ -237,7 +237,7 @@ def wallet_operation(doc, method):
 
             if doc.market_status != "CLOSE":
                 try:
-                    url = f"http://94.136.187.188:8086/orders/{doc.name}"
+                    url = f"http://127.0.0.1:8086/orders/{doc.name}"
                     response = requests.delete(url)
 
                     if response.status_code != 200:

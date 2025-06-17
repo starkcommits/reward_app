@@ -89,13 +89,11 @@ const Wallet = () => {
   const quickAmounts = [100, 500, 1000, 5000]
   const [open, setOpen] = useState(false)
   const { currentUser } = useFrappeAuth()
-  const tab = searchParams.get('tab' || 'all')
+  const [tab, setTab] = useState('All')
   const [showBreakdown, setShowBreakdown] = useState(false)
 
   const handleTabChange = (newTab) => {
-    const newParams = new URLSearchParams(searchParams)
-    newParams.set('tab', newTab) // update tab
-    setSearchParams(newParams) // apply while preserving others
+    setTab(newTab)
   }
 
   // console.log(currentUser)
@@ -769,7 +767,7 @@ const Wallet = () => {
                             </div>
                           </div>
                         </div>
-                      ) 
+                      )
                     })}
                   {tab === 'Debit' &&
                     debitHistory?.map((transaction) => {

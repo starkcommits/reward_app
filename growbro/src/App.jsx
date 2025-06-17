@@ -28,6 +28,9 @@ import OTPScreen from './pages/OTPScreen'
 import EditProfile from './pages/EditProfile'
 import { PanVerification } from './pages/PanVerification'
 import GotReferralCode from './pages/GotReferralCode'
+import DittofeedTracker from './components/DittofeedTracker'
+import { useFrappeAuth, useFrappeEventListener } from 'frappe-react-sdk'
+import RouteTracker from './components/RouteTracker'
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -38,9 +41,12 @@ const navItems = [
 ]
 
 function App() {
+  const { currentUser } = useFrappeAuth()
   return (
     <div className="w-full bg-gray-50 max-w-lg mx-auto">
       <Toaster />
+      <DittofeedTracker currentUser={currentUser} />
+      <RouteTracker currentUser={currentUser} />
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/signin" element={<SignIn />} />
