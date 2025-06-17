@@ -21,6 +21,7 @@ const CategoryPage = () => {
     useFrappeGetDocList('Market', {
       fields: [
         'name',
+        'icon',
         'question',
         'yes_price',
         'no_price',
@@ -206,62 +207,43 @@ const CategoryPage = () => {
           {Object.values(categoryMarkets || {})?.length > 0 ? (
             Object.values(categoryMarkets || {})?.map((market) => (
               <div
-                key={market.name}
-                onClick={() => handleMarketClick(market)}
-                className="p-4 cursor-pointer rounded-3xl hover:bg-gray-50 transition-colors"
+                className="p-4"
+                on
+                onClick={() => {
+                  handleMarketClick(market)
+                }}
               >
-                {/* {market.image && (
-                  <div className="relative h-32 mb-4 rounded-xl overflow-hidden">
-                    <img
-                      src={market.image}
-                      alt={market.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    <div className="absolute bottom-3 right-3">
-                      <span className="flex items-center text-xs font-medium bg-green-500/20 backdrop-blur-md px-2.5 py-1 rounded-full text-white">
-                        <TrendingUp className="h-3 w-3 mr-1" /> {market.trend}
-                      </span>
+                <div className="flex flex-col gap-1 ">
+                  <div className="w-full flex gap-4 justify-between">
+                    <h3 className="font-normal text-sm text-[#181818] w-[90%]">
+                      {market.question}
+                    </h3>
+                    <div className="w-[10%]">
+                      <img src={market.icon} className="h-8" alt="" />
                     </div>
                   </div>
-                )} */}
-                <h3 className="text-base font-medium mb-2">
-                  {market?.question}
-                </h3>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex items-center text-xs text-gray-600">
-                    <Users className="h-3.5 w-3.5 mr-1" />
-                    {/* <span>{market.traders.toLocaleString()} traders</span> */}
-                    <span>{market?.total_traders} traders</span>
-                  </div>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
-                    <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
-                    LIVE
-                  </span>
-                  {/* <div className="flex items-center text-xs text-gray-600">
-                    <Timer className="h-3.5 w-3.5 mr-1" />
-                    <span>
-                      {market?.closing_time
-                        ?.split(' ')[0]
-                        ?.split('-')
-                        .reverse()
-                        .join('-')}{' '}
-                      {market?.closing_time
-                        ?.split(' ')[1]
-                        ?.split(':')
-                        .reverse()
-                        .join(':')
-                        .slice(0, 5)}
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center text-xs text-[#606060]">
+                      <Users className="h-3.5 w-3.5 mr-1" />
+                      <span>
+                        {market.total_traders.toLocaleString()} traders
+                      </span>
+                    </div>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
+                      <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
+                      LIVE
                     </span>
-                  </div> */}
-                </div>
-                {/* <p className="text-xs text-gray-600 mb-4">{market?.question}</p> */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="py-2 px-4 bg-green-50 text-green-600 rounded-xl text-sm font-medium">
-                    Yes ₹{market?.yes_price}
                   </div>
-                  <div className="py-2 px-4 bg-rose-50 text-rose-600 rounded-xl text-sm font-medium">
-                    No ₹{market?.no_price}
+                  {/* <p className="text-xs text-gray-600 mb-4">
+                                        {market.info}
+                                      </p> */}
+                  <div className="grid grid-cols-2 gap-3 mt-2.5">
+                    <div className="py-2 px-4 text-center bg-green-50 text-green-600 rounded-xl text-xs font-light">
+                      Yes ₹{market.yes_price}
+                    </div>
+                    <div className="py-2 px-4 text-center bg-rose-50 text-rose-600 rounded-xl text-xs font-light">
+                      No ₹{market.no_price}
+                    </div>
                   </div>
                 </div>
               </div>
