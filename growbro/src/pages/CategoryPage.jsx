@@ -174,7 +174,7 @@ const CategoryPage = () => {
             )}
             <div className="flex items-center gap-4 mt-4">
               <div
-                className={`w-16 h-16 bg-gradient-to-br rounded-2xl shadow-sm flex items-center justify-center`}
+                className={`w-16 h-16 bg-gradient-to-br rounded-2xl shadow-sm flex items-center justify-center bg-white/20`}
               >
                 <span className="text-3xl">
                   <img
@@ -202,13 +202,13 @@ const CategoryPage = () => {
       </div>
 
       <div className="px-6 -mt-4">
-        <div className="bg-white rounded-3xl shadow-sm divide-y divide-gray-100">
+        <div className="bg-white shadow-sm rounded-3xl divide-y divide-gray-100">
           {Object.values(categoryMarkets || {})?.length > 0 ? (
             Object.values(categoryMarkets || {})?.map((market) => (
               <div
                 key={market.name}
                 onClick={() => handleMarketClick(market)}
-                className="p-4 cursor-pointer hover:bg-gray-50 transition-colors animate-fadeIn"
+                className="p-4 cursor-pointer rounded-3xl hover:bg-gray-50 transition-colors"
               >
                 {/* {market.image && (
                   <div className="relative h-32 mb-4 rounded-xl overflow-hidden">
