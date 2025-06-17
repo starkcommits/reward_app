@@ -597,8 +597,7 @@ def get_marketwise_holding():
         JOIN
             `tabMarket` m ON h.market_id = m.name
         WHERE
-            h.status IN ('ACTIVE', 'EXITING', 'EXITED')
-            AND m.status = 'OPEN'
+            m.status = 'OPEN'
             AND h.user_id = %(user_id)s
         GROUP BY
             h.market_id,
