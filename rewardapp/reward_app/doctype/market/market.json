@@ -16,6 +16,7 @@
   "total_investment",
   "best_bid",
   "description",
+  "closing_value",
   "column_break_sgfb",
   "closing_time",
   "yes_price",
@@ -224,12 +225,18 @@
    "fieldname": "table_erbe",
    "fieldtype": "Table",
    "options": "Fixture Table"
+  },
+  {
+   "depends_on": "eval: doc.status == 'RESOLVED'",
+   "fieldname": "closing_value",
+   "fieldtype": "Float",
+   "label": "Closing Value"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2025-06-18 11:30:29.623773",
+ "modified": "2025-06-18 12:04:58.603079",
  "modified_by": "Administrator",
  "module": "Reward App",
  "name": "Market",

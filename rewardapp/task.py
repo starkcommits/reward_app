@@ -134,7 +134,7 @@ def create_new_market_record():
     try:
         # Get the template market
         template_market = get_last_resolved_market()
-        
+        frappe.log_error("Resolved Market",template_market)
         if not template_market:
             frappe.log_error("No resolved market found")
             return {"status": "error", "message": "No resolved market found"}
@@ -187,20 +187,12 @@ def create_new_market_record():
         new_market.total_investment = 0
         new_market.total_traders = 0
         new_market.end_result = ''
-        
-        # Copy child table data if exists
-        if hasattr(template_market, 'table_erbe') and template_market.table_erbe:
-            for row in template_market.table_erbe:
-                new_row = new_market.append('table_erbe')
-                # Copy all fields from the child table row
-                for field in row.as_dict():
-                    if field not in ['name', 'creation', 'modified', 'modified_by', 'owner', 'parent']:
-                        setattr(new_row, field, getattr(row, field))
+        new_market.version = 0
         
         # Insert the new market
         new_market.insert()
         frappe.db.commit()
-        
+
         success_message = f"Created new crypto market: {new_market.name}"
         frappe.logger().info(success_message)
         

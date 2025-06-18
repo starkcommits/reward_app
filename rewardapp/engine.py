@@ -237,7 +237,8 @@ def trades():
 
 def market(doc, method):
     try:
-        if doc.status == "OPEN":
+        if doc.status == "OPEN" and int(doc.version) == 0:
+            frappe.db.set_value("Market",doc.name, 'version', 1)
             # Convert closing_time to ISO format if needed
             if isinstance(doc.closing_time, str):
                 # If it's already a string, ensure it's in ISO format
@@ -263,6 +264,7 @@ def market(doc, method):
                 frappe.logger().error(f"Error response: {response.text}")
                 frappe.throw(f"API error: {response.status_code} - {response.text}")
             else:
+                    
                 """Send real-time update via WebSockets"""
                 update_data = {
                     "name": doc.name,
@@ -274,9 +276,9 @@ def market(doc, method):
                     "closing_time": doc.closing_time,
                     "total_traders": doc.total_traders
                 }
-                
                 frappe.publish_realtime("market_event",update_data,after_commit=True)
                 frappe.msgprint("Market Created Successfully.")
+
         elif doc.status == "CLOSED":
             frappe.log_error("Market Closed",f"{doc.name}")
             orders = frappe.get_all("Orders", filters={
