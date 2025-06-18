@@ -8,14 +8,16 @@ const RouteTracker = ({ currentUser }) => {
 
   useEffect(() => {
     console.log('asdasd', currentUser, location.pathname)
-    DittofeedSdk.track({
-      event: 'Page Viewed',
-      userId: currentUser || undefined,
-      properties: {
-        path: location.pathname,
-        timestamp: new Date().toISOString(),
-      },
-    })
+    if (currentUser) {
+      DittofeedSdk.track({
+        event: 'Page Viewed',
+        userId: currentUser,
+        properties: {
+          path: location.pathname,
+          // timestamp: new Date().toISOString(),
+        },
+      })
+    }
   }, [location, currentUser])
 
   return null

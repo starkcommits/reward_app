@@ -24,10 +24,6 @@ createRoot(document.getElementById('root')).render(
     <FrappeProvider
       socketPort={import.meta.env.VITE_SOCKET_PORT}
       siteName={getSiteName()}
-      swrConfig={{
-        keepPreviousData: false,
-        provider: () => new Map(),
-      }}
     >
       <Router basename={import.meta.env.VITE_BASE_PATH}>
         <App />

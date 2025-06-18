@@ -262,7 +262,7 @@ const Home = () => {
                 <Menu className="h-5 w-5 text-gray-700" />
               </button>
               <div className="text-xl font-semibold text-indigo-600">
-                <img src={ONOIcon} className="w-20 h-8" alt="" />
+                <img src={ONOIcon} className="w-[5.2rem] h-7" alt="" />
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -314,7 +314,7 @@ const Home = () => {
         <div className="w-full relative z-[1] rounded-xl">
           <Carousel className="w-full" plugins={[bannerPlugin.current]}>
             <CarouselContent>
-              {marketingBannerData[0]?.home_position === 0 && (
+              {marketingBannerData?.[0]?.home_position === 0 && (
                 <CarouselItem className="basis-full">
                   <div className="p-1 w-full">
                     <img
@@ -325,7 +325,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
               )}
-              {marketingBannerData[1]?.home_position === 1 && (
+              {marketingBannerData?.[1]?.home_position === 1 && (
                 <CarouselItem className="basis-full">
                   <div className="p-1 w-full">
                     <img
@@ -336,7 +336,7 @@ const Home = () => {
                   </div>
                 </CarouselItem>
               )}
-              {marketingBannerData[2]?.home_position === 2 && (
+              {marketingBannerData?.[2]?.home_position === 2 && (
                 <CarouselItem className="basis-full">
                   <div className="p-1 w-full">
                     <img
@@ -404,11 +404,7 @@ const Home = () => {
                   return b.total_traders - a.total_traders
                 })
                 .map((market) => (
-                  <div
-                    key={market.name}
-                    className="market-card"
-                    onClick={() => handleMarketClick(market)}
-                  >
+                  <div key={market.name} className="market-card">
                     <>
                       {/* <div className="relative h-32">
                         <img
@@ -429,32 +425,45 @@ const Home = () => {
                           </div>
                         </div>
                       </div> */}
-                      <div className="p-4">
-                        <div className="flex flex-col gap-1 ">
-                          <div className="w-full flex gap-4 justify-between">
-                            <h3 className="font-normal text-sm text-[#181818] w-[90%]">
-                              {market.question}
-                            </h3>
-                            <div className="w-[10%]">
-                              <img src={market.icon} className="h-8" alt="" />
+                      <div
+                        className="p-4 border-white bg-white rounded-3xl"
+                        onClick={() => {
+                          handleMarketClick(market)
+                        }}
+                      >
+                        <div className="flex flex-col gap-2">
+                          <div className="w-full flex gap-3 items-center">
+                            <div className="w-[20%] h-full flex justify-center items-center">
+                              <img
+                                src={market.icon}
+                                className="h-full w-full"
+                                alt=""
+                              />
+                            </div>
+                            <div className="flex flex-col gap-2 w-[80%]">
+                              <h3 className="font-normal text-sm text-[#181818] leading-[20px]">
+                                {market.question}
+                              </h3>
+                              <div className="flex items-center gap-3">
+                                <div className="flex items-center text-xs text-[#606060]">
+                                  <Users className="h-3.5 w-3.5 mr-1" />
+                                  <span>
+                                    {market.total_traders.toLocaleString()}{' '}
+                                    traders
+                                  </span>
+                                </div>
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
+                                  <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
+                                  LIVE
+                                </span>
+                              </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center text-xs text-[#606060]">
-                              <Users className="h-3.5 w-3.5 mr-1" />
-                              <span>
-                                {market.total_traders.toLocaleString()} traders
-                              </span>
-                            </div>
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
-                              <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
-                              LIVE
-                            </span>
-                          </div>
+
                           {/* <p className="text-xs text-gray-600 mb-4">
-                          {market.info}
-                        </p> */}
-                          <div className="grid grid-cols-2 gap-3 mt-2.5">
+                                                              {market.info}
+                                                            </p> */}
+                          <div className="grid grid-cols-2 gap-3 mt-2">
                             <div className="py-2 px-4 text-center bg-green-50 text-green-600 rounded-xl text-xs font-light">
                               Yes ₹{market.yes_price}
                             </div>
