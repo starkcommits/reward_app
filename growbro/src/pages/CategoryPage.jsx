@@ -203,41 +203,43 @@ const CategoryPage = () => {
       </div>
 
       <div className="px-6 -mt-4">
-        <div className="bg-white shadow-sm rounded-3xl divide-y divide-gray-100">
+        <div className=" rounded-3xl flex flex-col gap-4">
           {Object.values(categoryMarkets || {})?.length > 0 ? (
             Object.values(categoryMarkets || {})?.map((market) => (
               <div
-                className="p-4"
-                on
+                className="p-4 border-white bg-white rounded-3xl"
                 onClick={() => {
                   handleMarketClick(market)
                 }}
               >
-                <div className="flex flex-col gap-1 ">
-                  <div className="w-full flex gap-4 justify-between">
-                    <h3 className="font-normal text-sm text-[#181818] w-[90%]">
-                      {market.question}
-                    </h3>
-                    <div className="w-[10%]">
-                      <img src={market.icon} className="h-8" alt="" />
+                <div className="flex flex-col gap-2">
+                  <div className="w-full flex gap-3 items-center">
+                    <div className="w-[20%] h-full flex justify-center items-center">
+                      <img src={market.icon} className="h-full w-full" alt="" />
+                    </div>
+                    <div className="flex flex-col gap-2 w-[80%]">
+                      <h3 className="font-normal text-sm text-[#181818] leading-[20px]">
+                        {market.question}
+                      </h3>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center text-xs text-[#606060]">
+                          <Users className="h-3.5 w-3.5 mr-1" />
+                          <span>
+                            {market.total_traders.toLocaleString()} traders
+                          </span>
+                        </div>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
+                          <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
+                          LIVE
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center text-xs text-[#606060]">
-                      <Users className="h-3.5 w-3.5 mr-1" />
-                      <span>
-                        {market.total_traders.toLocaleString()} traders
-                      </span>
-                    </div>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-600">
-                      <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse mr-1"></div>
-                      LIVE
-                    </span>
-                  </div>
+
                   {/* <p className="text-xs text-gray-600 mb-4">
                                         {market.info}
                                       </p> */}
-                  <div className="grid grid-cols-2 gap-3 mt-2.5">
+                  <div className="grid grid-cols-2 gap-3 mt-2">
                     <div className="py-2 px-4 text-center bg-green-50 text-green-600 rounded-xl text-xs font-light">
                       Yes ₹{market.yes_price}
                     </div>
