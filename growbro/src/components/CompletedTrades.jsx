@@ -7,6 +7,7 @@ import { AlertCircle, CheckCircle } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import TradeSheet from './defaultTradeSheet'
 import { useNavigate } from 'react-router-dom'
+import { Badge } from '@/components/ui/badge'
 
 const CompletedTrades = ({ trade }) => {
   const navigate = useNavigate()
@@ -27,13 +28,15 @@ const CompletedTrades = ({ trade }) => {
         navigate(`/portfolio/closed/${trade?.market_id}`)
       }}
     >
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="font-medium text-gray-900">{trade.market_id}</h3>
+      <div className="flex items-center justify-between">
+        <Badge className="text-xs font-semibold hover:underline">
+          #{trade.market_id}
+        </Badge>
         <div className="bg-green-200 text-green-600 rounded-xl px-3">
           {trade.status}
         </div>
       </div>
-      <div>{trade?.question}</div>
+      <div className="font-medium text-lg text-gray-600">{trade?.question}</div>
       {/* <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
         <span>{formatDate(trade.closing_time)}</span>
       </div> */}

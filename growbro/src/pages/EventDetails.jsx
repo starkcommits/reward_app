@@ -30,6 +30,8 @@ import {
 import EventDetailsOrderBook from '../components/EventDetailsOrderBook'
 import OrdersTab from '../components/OrdersTab'
 import BuyTradeSheet from '../components/BuyTradeSheet'
+import TradingViewWidgetBTC from '../components/TradingViewWidgetBTC'
+import TradingViewWidgetETH from '../components/TradingViewWidgetETH'
 
 ChartJS.register(
   CategoryScale,
@@ -114,7 +116,7 @@ const EventDetails = () => {
     setMarket(updatedData)
   })
 
-  console.log('market:', market)
+  console.log('market:', market.subcategory)
   // Listen for real-time updates
   // useFrappeEventListener('market_event', (updatedMarket) => {
   //   if (updatedMarket.name === market.name) {
@@ -162,13 +164,27 @@ const EventDetails = () => {
 
       <div className="px-4 py-4">
         {/* ... existing content ... */}
+
+        <div className="h-20 rounded-full w-full flex items-center justify-center mb-4">
+          <img width={100} height={100} src={market?.icon} alt="" />
+        </div>
+        <h2 className="text-xl text-center font-medium mb-4 px-6">
+          {market?.question}
+        </h2>
+
         <div className="flex flex-col items-center mb-6">
-          <div className="w-20 h-20 rounded-full flex items-center justify-center mb-4">
-            <img src={market?.icon} alt="" />
-          </div>
-          <h2 className="text-xl text-center font-medium mb-4 px-6">
-            {market?.question}
-          </h2>
+          {market?.subcategory === 'bitcoin' && (
+            <div className="h-[250px] w-full">
+              <TradingViewWidgetBTC />
+            </div>
+          )}
+
+          {market?.subcategory === 'ethereum' && (
+            <div className="h-[250px] w-full">
+              <TradingViewWidgetETH />
+            </div>
+          )}
+
           {/* <div className="flex items-center gap-4 text-sm text-gray-600">
             <span className="flex items-center">
               <Users className="h-4 w-4 mr-1.5" />
@@ -196,7 +212,7 @@ const EventDetails = () => {
         </div> */}
         <div className="flex gap-3 mb-6">
           <button
-            className="flex-1 py-3 px-4 bg-blue-500 text-white font-medium rounded-xl active:bg-blue-600 transition-colors"
+            className="flex-1 py-3 px-4 bg-blue-500 text-white text-sm font-medium rounded-xl active:bg-blue-600 transition-colors"
             onClick={() => {
               setSelectedChoice('YES')
               setIsSheetOpen(true)
@@ -206,7 +222,7 @@ const EventDetails = () => {
           </button>
 
           <button
-            className="flex-1 py-3 px-4 bg-rose-500 text-white font-medium rounded-xl active:bg-rose-600 transition-colors"
+            className="flex-1 py-3 px-4 bg-rose-500 text-white text-sm font-medium rounded-xl active:bg-rose-600 transition-colors"
             onClick={() => {
               setSelectedChoice('NO')
               setIsSheetOpen(true)
@@ -217,34 +233,34 @@ const EventDetails = () => {
         </div>
 
         <div className="mx-auto bg-white rounded-xl shadow-sm p-4">
-          <h1 className="text-xl font-bold text-left text-gray-900 mb-6">
+          <h1 className="text-md font-bold text-left text-gray-900 mb-6">
             About the event
           </h1>
 
           {/* Event Stats Grid */}
           <div className="grid grid-cols-2 gap-8 mb-8">
             <div>
-              <p className="text-gray-500 mb-1">Traders</p>
-              <p className="text-xl font-bold text-gray-900">
+              <p className="text-gray-500 mb-1 text-xs">Traders</p>
+              <p className="text-sm font-bold text-gray-900">
                 {market?.total_traders}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 mb-1">Total Volume</p>
-              <p className="text-xl font-bold text-gray-900">
+              <p className="text-gray-500 mb-1 text-xs">Total Volume</p>
+              <p className="font-bold text-gray-900 text-sm">
                 ₹{market?.total_investment}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 mb-1">Started at</p>
-              <p className="text-md font-semibold text-gray-900">
+              <p className="text-gray-500 mb-1 text-xs">Started at</p>
+              <p className="text-sm font-semibold text-gray-900">
                 {formatDate(market?.creation)}
               </p>
             </div>
             {market?.status === 'OPEN' && (
               <div>
-                <p className="text-gray-500 mb-1">Ending at</p>
-                <p className="text-md font-semibold text-gray-900">
+                <p className="text-gray-500 mb-1 text-xs">Ending at</p>
+                <p className="text-sm font-semibold text-gray-900">
                   {formatDate(market?.closing_time)}
                 </p>
               </div>
