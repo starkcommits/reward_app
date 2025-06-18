@@ -1,0 +1,105 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "field:category_name",
+  "creation": "2025-03-28 12:46:58.545887",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "category_name",
+    "column_break_alfv",
+    "category_image",
+    "yes_color",
+    "column_break_htwk",
+    "image_url",
+    "no_color",
+    "column_break_kmlc",
+    "is_active"
+  ],
+  "fields": [
+    {
+      "fieldname": "category_name",
+      "fieldtype": "Data",
+      "label": "Category Name",
+      "unique": 1
+    },
+    {
+      "default": "0",
+      "fieldname": "is_active",
+      "fieldtype": "Check",
+      "in_list_view": 1,
+      "label": "Is Active"
+    },
+    {
+      "fieldname": "column_break_kmlc",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "column_break_alfv",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "category_image",
+      "fieldtype": "Attach Image",
+      "label": "Category Image"
+    },
+    {
+      "fieldname": "column_break_htwk",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "image_url",
+      "fieldtype": "Data",
+      "label": "Image URL"
+    },
+    {
+      "fieldname": "yes_color",
+      "fieldtype": "Data",
+      "label": "Yes Color"
+    },
+    {
+      "fieldname": "no_color",
+      "fieldtype": "Data",
+      "label": "No Color"
+    }
+  ],
+  "grid_page_length": 50,
+  "index_web_pages_for_search": 1,
+  "links": [],
+  "modified": "2025-05-23 15:27:35.783989",
+  "modified_by": "Administrator",
+  "module": "Reward App",
+  "name": "Market Category",
+  "naming_rule": "By fieldname",
+  "owner": "Administrator",
+  "permissions": [
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "System Manager",
+      "share": 1,
+      "write": 1
+    },
+    {
+      "create": 1,
+      "delete": 1,
+      "email": 1,
+      "export": 1,
+      "print": 1,
+      "read": 1,
+      "report": 1,
+      "role": "Trader",
+      "share": 1,
+      "write": 1
+    }
+  ],
+  "row_format": "Dynamic",
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}

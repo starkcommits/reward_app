@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2025-05-02 16:53:24.237568",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "total_referrals",
+  "column_break_vskj",
+  "referral_name",
+  "total_allowed_referrals"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_vskj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "referral_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Referral Name",
+   "options": "Referral Config"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_referrals",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Referrals"
+  },
+  {
+   "fetch_from": "referral_name.total_allowed_referrals",
+   "fieldname": "total_allowed_referrals",
+   "fieldtype": "Read Only",
+   "label": "Total Allowed Referrals"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-10 13:30:11.398516",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Referral Code",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

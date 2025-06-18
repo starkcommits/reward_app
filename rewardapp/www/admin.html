@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/rewardapp/admin/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <script type="module" crossorigin src="/assets/rewardapp/admin/assets/index-DQBZqQRG.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/rewardapp/admin/assets/index-1wSm50y6.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      window.csrf_token = '{{ frappe.session.csrf_token }}';
+
+            if (!window.frappe) window.frappe = {};
+
+            frappe.boot = JSON.parse({{ boot }});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"vo-T38zEiY\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Finance</span>\",\"col\":12}},{\"id\":\"h3npILdYId\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Market Investments\",\"col\":12}}]",
+ "creation": "2025-05-10 12:06:49.869920",
+ "custom_blocks": [
+  {
+   "custom_block_name": "Market Investments",
+   "label": "Market Investments"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "expenses",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Finance",
+ "links": [],
+ "modified": "2025-05-14 11:46:27.153522",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Finance",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 34.0,
+ "shortcuts": [],
+ "title": "Finance"
+}

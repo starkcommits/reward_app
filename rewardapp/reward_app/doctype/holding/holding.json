@@ -1,0 +1,197 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "hash",
+ "creation": "2025-04-16 15:31:26.382052",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "market_id",
+  "quantity",
+  "status",
+  "order_id",
+  "user_id",
+  "question",
+  "market_yes_price",
+  "market_no_price",
+  "buy_order",
+  "profit_price",
+  "column_break_znim",
+  "price",
+  "opinion_type",
+  "exit_price",
+  "filled_quantity",
+  "returns",
+  "market_status",
+  "closing_time",
+  "remark",
+  "amount_invested",
+  "loss_price"
+ ],
+ "fields": [
+  {
+   "fieldname": "market_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Market ID",
+   "options": "Market",
+   "search_index": 1
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "column_break_znim",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "price",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Price"
+  },
+  {
+   "fieldname": "opinion_type",
+   "fieldtype": "Select",
+   "label": "Opinion Type",
+   "options": "YES\nNO"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "ACTIVE\nEXITING\nEXITED",
+   "search_index": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "exit_price",
+   "fieldtype": "Float",
+   "label": "Exit Price"
+  },
+  {
+   "default": "0",
+   "fieldname": "filled_quantity",
+   "fieldtype": "Int",
+   "label": "Filled Quantity"
+  },
+  {
+   "fieldname": "order_id",
+   "fieldtype": "Link",
+   "label": "Order ID",
+   "options": "Orders"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "User ID"
+  },
+  {
+   "fieldname": "returns",
+   "fieldtype": "Float",
+   "label": "Returns"
+  },
+  {
+   "fetch_from": "market_id.question",
+   "fieldname": "question",
+   "fieldtype": "Read Only",
+   "label": "Question"
+  },
+  {
+   "fetch_from": "market_id.yes_price",
+   "fieldname": "market_yes_price",
+   "fieldtype": "Read Only",
+   "label": "Market Yes Price"
+  },
+  {
+   "fetch_from": "market_id.no_price",
+   "fieldname": "market_no_price",
+   "fieldtype": "Read Only",
+   "label": "Market No Price"
+  },
+  {
+   "fetch_from": "market_id.status",
+   "fieldname": "market_status",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "Market Status"
+  },
+  {
+   "fetch_from": "market_id.closing_time",
+   "fieldname": "closing_time",
+   "fieldtype": "Read Only",
+   "label": "Closing Time"
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Data",
+   "label": "Remark"
+  },
+  {
+   "fieldname": "amount_invested",
+   "fieldtype": "Float",
+   "is_virtual": 1,
+   "label": "Amount invested",
+   "options": "doc.quantity*doc.price",
+   "read_only": 1
+  },
+  {
+   "fieldname": "buy_order",
+   "fieldtype": "Data",
+   "label": "Buy Order"
+  },
+  {
+   "fieldname": "profit_price",
+   "fieldtype": "Float",
+   "label": "Profit Price"
+  },
+  {
+   "fieldname": "loss_price",
+   "fieldtype": "Float",
+   "label": "Loss Price"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-13 17:55:44.585034",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Holding",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

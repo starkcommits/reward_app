@@ -1,0 +1,59 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"3OsP9xEV6h\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">REFFERAL</span>\",\"col\":12}},{\"id\":\"bg7cPH7E-w\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>Active referrals</b>\",\"col\":3}},{\"id\":\"CATJ4uJzGd\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>pending referrals</b>\",\"col\":3}},{\"id\":\"Dnl1asOMZQ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>Rejected referrals</b>\",\"col\":3}},{\"id\":\"Hn4LgrKTbQ\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PIbpaBAn47\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>SHORTCUT</b></span>\",\"col\":12}},{\"id\":\"kwpX4WOp14\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create referral config\",\"col\":3}},{\"id\":\"P0Mn78CHKl\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Track referrals\",\"col\":3}}]",
+ "creation": "2025-05-10 16:57:11.242750",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "expand",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Referral",
+ "links": [],
+ "modified": "2025-05-10 18:04:15.782875",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Referral",
+ "number_cards": [
+  {
+   "label": "<b>pending referrals</b>",
+   "number_card_name": "Pending Referrals"
+  },
+  {
+   "label": "<b>Active referrals</b>",
+   "number_card_name": "Active referrals"
+  },
+  {
+   "label": "<b>Rejected referrals</b>",
+   "number_card_name": "Rejected referrals"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 35.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Track referrals",
+   "link_to": "Referral Tracking",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create referral config",
+   "link_to": "Referral Config",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Referral"
+}
