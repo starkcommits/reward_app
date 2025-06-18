@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:TXN_ONO_{#####}",
+ "creation": "2025-03-26 13:25:55.411415",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user",
+  "market_id",
+  "question",
+  "winning_side",
+  "wallet_type",
+  "column_break_rbct",
+  "order_id",
+  "transaction_amount",
+  "transaction_type",
+  "transaction_status",
+  "transaction_method",
+  "remark",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "User",
+   "options": "User",
+   "reqd": 1
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Remark"
+  },
+  {
+   "fieldname": "column_break_rbct",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "order_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Order ID",
+   "options": "Orders"
+  },
+  {
+   "fieldname": "transaction_amount",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transaction Amount"
+  },
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Transaction Type",
+   "options": "Debit\nCredit"
+  },
+  {
+   "fieldname": "market_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Market Id",
+   "options": "Market"
+  },
+  {
+   "fetch_from": "market_id.question",
+   "fieldname": "question",
+   "fieldtype": "Read Only",
+   "label": "Question"
+  },
+  {
+   "fetch_from": "market_id.end_result",
+   "fieldname": "winning_side",
+   "fieldtype": "Read Only",
+   "label": "Winning Side"
+  },
+  {
+   "fieldname": "transaction_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Transaction Status",
+   "options": "Success\nFailed\nPending"
+  },
+  {
+   "fieldname": "transaction_method",
+   "fieldtype": "Select",
+   "label": "Transaction Method",
+   "options": "UPI\nCARD\nWALLET"
+  },
+  {
+   "fieldname": "wallet_type",
+   "fieldtype": "Select",
+   "label": "Wallet Type",
+   "options": "Promo\nMain"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transaction Logs",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-27 13:42:28.249242",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Transaction Logs",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

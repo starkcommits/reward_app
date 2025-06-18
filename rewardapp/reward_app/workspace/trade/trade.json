@@ -1,0 +1,39 @@
+{
+ "charts": [
+  {
+   "chart_name": "Daily Trades",
+   "label": "<b>TRADE CHART</b>"
+  }
+ ],
+ "content": "[{\"id\":\"DjFT_NsuZQ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">TRADES ANALYTICS</span>\",\"col\":12}},{\"id\":\"V-Dk_q1AL4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>TOTAL TRADES</b>\",\"col\":3}},{\"id\":\"GcNpNP_9Y2\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"Yr1_h5G5iZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>CHART</b></span>\",\"col\":12}},{\"id\":\"CGz__AMV1R\",\"type\":\"chart\",\"data\":{\"chart_name\":\"<b>TRADE CHART</b>\",\"col\":12}}]",
+ "creation": "2025-05-10 12:04:33.927568",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "kanban",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Trade",
+ "links": [],
+ "modified": "2025-05-10 16:35:11.481157",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Trade",
+ "number_cards": [
+  {
+   "label": "<b>TOTAL TRADES</b>",
+   "number_card_name": "Total Trades"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 32.0,
+ "shortcuts": [],
+ "title": "Trade"
+}

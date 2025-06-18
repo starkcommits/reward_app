@@ -1,0 +1,109 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ONO_TRADE_{####}",
+ "creation": "2025-03-26 13:21:45.566598",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "market_id",
+  "first_user_order_id",
+  "first_user_id",
+  "first_user_price",
+  "column_break_akxa",
+  "quantity",
+  "second_user_order_id",
+  "second_user_id",
+  "second_user_price"
+ ],
+ "fields": [
+  {
+   "fieldname": "market_id",
+   "fieldtype": "Data",
+   "label": "Market ID"
+  },
+  {
+   "fieldname": "column_break_akxa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "first_user_order_id",
+   "fieldtype": "Data",
+   "label": "First User Order ID"
+  },
+  {
+   "fieldname": "first_user_price",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First User Price"
+  },
+  {
+   "fieldname": "second_user_order_id",
+   "fieldtype": "Data",
+   "label": "Second User Order ID"
+  },
+  {
+   "fieldname": "second_user_price",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Second User Price"
+  },
+  {
+   "fieldname": "first_user_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First User ID"
+  },
+  {
+   "fieldname": "second_user_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Second User ID"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-04-09 17:39:27.127014",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Trades",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
