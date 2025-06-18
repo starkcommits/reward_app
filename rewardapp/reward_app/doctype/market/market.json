@@ -15,6 +15,7 @@
     "status",
     "total_investment",
     "best_bid",
+    "description",
     "closing_value",
     "column_break_sgfb",
     "closing_time",
@@ -23,12 +24,16 @@
     "total_traders",
     "best_ask",
     "max_allowed_quantity",
+    "version",
+    "frequency",
     "ui_detail_section",
     "yes_color",
     "yes_side_label",
     "column_break_aliq",
     "no_color",
     "no_side_label",
+    "fixtures_section",
+    "table_erbe",
     "lft",
     "rgt",
     "is_group",
@@ -78,7 +83,7 @@
       "fieldtype": "Select",
       "in_list_view": 1,
       "label": "Status",
-      "options": "OPEN\nPAUSED\nCLOSED\nCANCELED\nRESOLVED"
+      "options": "OPEN\nPAUSED\nCLOSED\nRESOLVED"
     },
     {
       "fieldname": "category",
@@ -155,12 +160,6 @@
       "fieldtype": "Column Break"
     },
     {
-      "depends_on": "eval: doc.category == 'Crypto' && doc.status == 'RESOLVED'",
-      "fieldname": "closing_value",
-      "fieldtype": "Float",
-      "label": "Closing Value"
-    },
-    {
       "fieldname": "lft",
       "fieldtype": "Int",
       "hidden": 1,
@@ -199,12 +198,45 @@
       "fieldname": "icon",
       "fieldtype": "Attach",
       "label": "Icon"
+    },
+    {
+      "fieldname": "description",
+      "fieldtype": "Data",
+      "label": "Description"
+    },
+    {
+      "default": "1",
+      "fieldname": "version",
+      "fieldtype": "Read Only",
+      "label": "Version"
+    },
+    {
+      "depends_on": "eval: doc.category == 'Crypto'",
+      "fieldname": "frequency",
+      "fieldtype": "Int",
+      "label": "Frequency"
+    },
+    {
+      "fieldname": "fixtures_section",
+      "fieldtype": "Section Break",
+      "label": "Fixtures"
+    },
+    {
+      "fieldname": "table_erbe",
+      "fieldtype": "Table",
+      "options": "Fixture Table"
+    },
+    {
+      "depends_on": "eval: doc.status == 'RESOLVED'",
+      "fieldname": "closing_value",
+      "fieldtype": "Float",
+      "label": "Closing Value"
     }
   ],
   "index_web_pages_for_search": 1,
   "is_tree": 1,
   "links": [],
-  "modified": "2025-06-09 13:20:55.911074",
+  "modified": "2025-06-18 12:04:58.603079",
   "modified_by": "Administrator",
   "module": "Reward App",
   "name": "Market",

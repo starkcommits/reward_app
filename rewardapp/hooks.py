@@ -184,6 +184,7 @@ api = {
         "rewardapp.engine.total_traders",
         "rewardapp.engine.get_marketwise_holding",
         "rewardapp.task.execute",
+        "rewardapp.task.create_new_market_record",
         "rewardapp.api.logout"
     ]
 }

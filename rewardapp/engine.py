@@ -237,7 +237,8 @@ def trades():
 
 def market(doc, method):
     try:
-        if doc.status == "OPEN":
+        if doc.status == "OPEN" and int(doc.version) == 0:
+            frappe.db.set_value("Market",doc.name, 'version', 1)
             # Convert closing_time to ISO format if needed
             if isinstance(doc.closing_time, str):
                 # If it's already a string, ensure it's in ISO format
@@ -256,13 +257,14 @@ def market(doc, method):
             # For debugging
             frappe.logger().info(f"Sending payload to market engine: {payload}")
             
-            url = "http://127.0.0.1:8086/markets/"
+            url = "http://13.202.185.148:8086/markets/"
             response = requests.post(url, json=payload)
             
             if response.status_code != 201:
                 frappe.logger().error(f"Error response: {response.text}")
                 frappe.throw(f"API error: {response.status_code} - {response.text}")
             else:
+                    
                 """Send real-time update via WebSockets"""
                 update_data = {
                     "name": doc.name,
@@ -274,9 +276,9 @@ def market(doc, method):
                     "closing_time": doc.closing_time,
                     "total_traders": doc.total_traders
                 }
-                
                 frappe.publish_realtime("market_event",update_data,after_commit=True)
                 frappe.msgprint("Market Created Successfully.")
+
         elif doc.status == "CLOSED":
             frappe.log_error("Market Closed",f"{doc.name}")
             orders = frappe.get_all("Orders", filters={
@@ -291,7 +293,7 @@ def market(doc, method):
                 order_doc.save()  # Triggers hooks
 
             frappe.db.commit()
-            url=f"http://127.0.0.1:8086/markets/{doc.name}/close"
+            url=f"http://13.202.185.148:8086/markets/{doc.name}/close"
             response = requests.post(url)
                 
             if response.status_code != 200:
@@ -732,7 +734,7 @@ def holding(doc,method):
 
         # API call to sync order update
         try:
-            url = "http://127.0.0.1:8086/orders/update_quantity"
+            url = "http://13.202.185.148:8086/orders/update_quantity"
             response = requests.put(url, json=payload)
             if response.status_code != 201:
                 frappe.log_error(f"Error response: {response.text}")
@@ -885,7 +887,7 @@ def update_order_price(user_id, order_id, price):
             "new_price": price
         }
         try:
-            url = "http://127.0.0.1:8086/orders/update_price"
+            url = "http://13.202.185.148:8086/orders/update_price"
             response = requests.put(url, json=payload)
             
             if response.status_code != 201:
