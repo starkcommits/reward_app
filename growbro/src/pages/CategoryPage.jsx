@@ -23,6 +23,7 @@ const CategoryPage = () => {
         'name',
         'icon',
         'question',
+
         'yes_price',
         'no_price',
         'closing_time',
@@ -163,16 +164,6 @@ const CategoryPage = () => {
           </div>
 
           <div className="bg-white/20 backdrop-blur-lg rounded-3xl p-6 mb-6">
-            {id === 'Bitcoin' && (
-              <div className="h-[350px]">
-                <TradingViewWidgetBTC />
-              </div>
-            )}
-            {id === 'ethereum' && (
-              <div className="h-[350px]">
-                <TradingViewWidgetETH />
-              </div>
-            )}
             <div className="flex items-center gap-4 mt-4">
               <div
                 className={`w-16 h-16 bg-gradient-to-br rounded-2xl shadow-sm flex items-center justify-center bg-white/20`}

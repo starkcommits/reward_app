@@ -30,8 +30,9 @@ import {
 import TradeSheet from '../components/defaultTradeSheet'
 import { useFrappeAuth, useFrappeGetCall } from 'frappe-react-sdk'
 import ActivePosition from '../components/ActivePositions'
-import CompletedTrades from '../components/CompletedTrades'
+
 import PortfolioActiveValues from '../components/PortfolioActiveValues'
+import CompletedTrades from '../components/CompletedTrades'
 
 ChartJS.register(
   CategoryScale,

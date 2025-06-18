@@ -18,7 +18,7 @@ function TradingViewWidgetBTC() {
           "locale": "en",
           "hide_side_toolbar": true,
           "allow_symbol_change": false,
-          "details": true,
+          "details": false,
           "support_host": "https://www.tradingview.com"
         }`
     container.current.appendChild(script)

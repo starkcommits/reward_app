@@ -14,7 +14,6 @@ const RouteTracker = ({ currentUser }) => {
         userId: currentUser,
         properties: {
           path: location.pathname,
-          // timestamp: new Date().toISOString(),
         },
       })
     }

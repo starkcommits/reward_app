@@ -190,7 +190,7 @@ const PortfolioActiveValues = () => {
     )
 
   return (
-    <div className="flex justify-between py-4">
+    <div className="flex justify-between">
       <div className="flex flex-col gap-2 items-start">
         <div className="flex items-center justify-between">
           <span className="text-white font-semibold">Invested</span>
