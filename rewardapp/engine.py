@@ -238,7 +238,7 @@ def trades():
 def market(doc, method):
     try:
         if doc.status == "OPEN" and int(doc.version) == 0:
-            frappe.db.set_value("Market",doc.name, 'version', 1)
+            frappe.db.set_value('Market',doc.name,'version',1)
             # Convert closing_time to ISO format if needed
             if isinstance(doc.closing_time, str):
                 # If it's already a string, ensure it's in ISO format
