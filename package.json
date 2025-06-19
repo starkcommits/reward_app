@@ -1,0 +1,15 @@
+{
+  "name": "rewardapp",
+  "version": "1.0.0",
+  "description": "Reward App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd growbro && yarn install",
+    "dev": "cd growbro && yarn dev",
+    "build": "cd growbro && yarn build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

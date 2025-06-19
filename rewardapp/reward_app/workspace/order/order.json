@@ -1,0 +1,67 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"SOdNkP6eby\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">ORDERS ANALYTICS</span>\",\"col\":12}},{\"id\":\"wRJODNniX0\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"H430kAd12L\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>MATCHED ORDERS</b>\",\"col\":3}},{\"id\":\"rK9U6ejDQj\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>UNMATCHED ORDERS</b>\",\"col\":3}},{\"id\":\"XdsTTBpnz4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>CANCELLED ORDERS</b>\",\"col\":3}},{\"id\":\"aw_hrPd3gQ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>SETTLED ORDERS</b>\",\"col\":3}},{\"id\":\"_9awzVuLUz\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>Pending Transactions</b>\",\"col\":4}},{\"id\":\"zHx4ytZSBt\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"0m09Optniu\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>SHORTCUT</b></span>\",\"col\":12}},{\"id\":\"09I7KsVBXH\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cancel Order\",\"col\":3}},{\"id\":\"M0Jr3xHcQU\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Transaction Log Report\",\"col\":3}}]",
+ "creation": "2025-05-10 12:03:09.265884",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "stock",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Order",
+ "links": [],
+ "modified": "2025-05-12 10:52:29.993430",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Order",
+ "number_cards": [
+  {
+   "label": "<b>Pending Transactions</b>",
+   "number_card_name": "Pending Transactions"
+  },
+  {
+   "label": "<b>MATCHED ORDERS</b>",
+   "number_card_name": "Matched Orders"
+  },
+  {
+   "label": "<b>UNMATCHED ORDERS</b>",
+   "number_card_name": "Unmatched Orders"
+  },
+  {
+   "label": "<b>CANCELLED ORDERS</b>",
+   "number_card_name": "Cancelled Orders"
+  },
+  {
+   "label": "<b>SETTLED ORDERS</b>",
+   "number_card_name": "Settled Orders"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 31.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Transaction Log Report",
+   "link_to": "Transaction Log Report",
+   "report_ref_doctype": "Transaction Log",
+   "type": "Report"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Cancel Order",
+   "link_to": "Orders",
+   "stats_filter": "[[\"Orders\",\"status\",\"!=\",\"CANCELED\",false]]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Order"
+}

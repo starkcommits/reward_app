@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:referral_name",
+ "creation": "2025-05-02 16:20:30.314721",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "referral_name",
+  "referee_reward_amount",
+  "description",
+  "column_break_zato",
+  "referrer_reward_amount",
+  "total_allowed_referrals",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "label": "Description"
+  },
+  {
+   "fieldname": "referral_name",
+   "fieldtype": "Data",
+   "label": "Referral Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "column_break_zato",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "total_allowed_referrals",
+   "fieldtype": "Int",
+   "label": "Total Allowed Referrals"
+  },
+  {
+   "fieldname": "referee_reward_amount",
+   "fieldtype": "Float",
+   "label": "Referee Reward Amount"
+  },
+  {
+   "fieldname": "referrer_reward_amount",
+   "fieldtype": "Float",
+   "label": "Referrer Reward Amount"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-10 13:31:03.323212",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Referral Config",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

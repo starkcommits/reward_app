@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ORD_ONO_{######}",
+ "creation": "2025-03-26 12:50:58.116812",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "market_id",
+  "user_id",
+  "question",
+  "status",
+  "order_type",
+  "closing_time",
+  "yes_price",
+  "no_price",
+  "column_break_spdz",
+  "quantity",
+  "filled_quantity",
+  "opinion_type",
+  "amount",
+  "remark",
+  "market_status",
+  "holding_id",
+  "stop_loss",
+  "loss_price",
+  "book_profit",
+  "profit_price",
+  "auto_cancel",
+  "cancel_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Int",
+   "label": "Quantity"
+  },
+  {
+   "default": "0",
+   "fieldname": "filled_quantity",
+   "fieldtype": "Int",
+   "label": "Filled Quantity"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "UNMATCHED\nMATCHED\nPARTIAL\nCANCELED\nSETTLED"
+  },
+  {
+   "fieldname": "market_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Market ID",
+   "options": "Market",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "market_id.question",
+   "fieldname": "question",
+   "fieldtype": "Read Only",
+   "label": "Question"
+  },
+  {
+   "fieldname": "column_break_spdz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "order_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Order Type",
+   "options": "SELL\nBUY"
+  },
+  {
+   "fieldname": "opinion_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Opinion Type",
+   "options": "YES\nNO"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Amount"
+  },
+  {
+   "fetch_from": "market_id.closing_time",
+   "fieldname": "closing_time",
+   "fieldtype": "Read Only",
+   "label": "Closing Time"
+  },
+  {
+   "fetch_from": "market_id.yes_price",
+   "fieldname": "yes_price",
+   "fieldtype": "Read Only",
+   "label": "Yes Price"
+  },
+  {
+   "fetch_from": "market_id.no_price",
+   "fieldname": "no_price",
+   "fieldtype": "Read Only",
+   "label": "No Price"
+  },
+  {
+   "fetch_from": "market_id.status",
+   "fieldname": "market_status",
+   "fieldtype": "Read Only",
+   "label": "Market Status"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Link",
+   "label": "User ID",
+   "options": "User"
+  },
+  {
+   "fieldname": "remark",
+   "fieldtype": "Data",
+   "label": "Remark"
+  },
+  {
+   "fieldname": "holding_id",
+   "fieldtype": "Link",
+   "label": "Holding ID",
+   "options": "Holding"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.order_type == 'BUY';",
+   "fieldname": "stop_loss",
+   "fieldtype": "Check",
+   "label": "Stop Loss"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.order_type == 'BUY';",
+   "fieldname": "book_profit",
+   "fieldtype": "Check",
+   "label": "Book Profit"
+  },
+  {
+   "default": "10",
+   "depends_on": "eval: doc.book_profit == 1;",
+   "fieldname": "profit_price",
+   "fieldtype": "Float",
+   "label": "Profit Price"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.order_type == 'BUY';",
+   "fieldname": "auto_cancel",
+   "fieldtype": "Check",
+   "label": "Auto Cancel"
+  },
+  {
+   "depends_on": "eval: doc.auto_cancel == 1;",
+   "fieldname": "cancel_time",
+   "fieldtype": "Datetime",
+   "label": "Cancel Time"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval: doc.stop_loss == 1;",
+   "fieldname": "loss_price",
+   "fieldtype": "Float",
+   "label": "Loss Price"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-14 14:28:40.101350",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Orders",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}

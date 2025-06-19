@@ -1,0 +1,84 @@
+{
+ "charts": [
+  {
+   "chart_name": "ONBOARD TRADERS",
+   "label": "ONBOARD TRADERS"
+  }
+ ],
+ "content": "[{\"id\":\"-nZwR7EevW\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">PLAYERS ANALYTICS</span>\",\"col\":12}},{\"id\":\"Eh6iWeXGlI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>TOTAL USERS</b>\",\"col\":3}},{\"id\":\"XQQganB6Ep\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>ACTIVE USERS</b>\",\"col\":3}},{\"id\":\"z5FmIu_Pxx\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>PENDING KYC</b>\",\"col\":3}},{\"id\":\"8y22F6YZpe\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>TEAM SIZE</b>\",\"col\":3}},{\"id\":\"u5d4FxdyV9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"n-_Y-5JGZd\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>SHORTCUTS</b></span>\",\"col\":12}},{\"id\":\"-IuoVdmjnK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Traders List\",\"col\":3}},{\"id\":\"38i1-S1bz8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create new User\",\"col\":3}},{\"id\":\"A5JIDNVCnr\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"User banks\",\"col\":3}},{\"id\":\"bWBqgG4HSK\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"ePt4U7pHQF\",\"type\":\"paragraph\",\"data\":{\"text\":\"PLAYERS HOLDINGS\",\"col\":12}},{\"id\":\"NaBC1how_F\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Player Holdings\",\"col\":3}},{\"id\":\"AjOX1m3qqe\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"-LiAkOmzDy\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>CHARTS</b></span>\",\"col\":12}},{\"id\":\"izhcxIsiu0\",\"type\":\"chart\",\"data\":{\"chart_name\":\"ONBOARD TRADERS\",\"col\":12}}]",
+ "creation": "2025-05-10 11:07:05.076729",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "share-people",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Players",
+ "links": [],
+ "modified": "2025-05-12 11:25:33.517368",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Players",
+ "number_cards": [
+  {
+   "label": "<b>TOTAL USERS</b>",
+   "number_card_name": "Total users"
+  },
+  {
+   "label": "<b>ACTIVE USERS</b>",
+   "number_card_name": "Active Users"
+  },
+  {
+   "label": "<b>PENDING KYC</b>",
+   "number_card_name": "Pending KYC"
+  },
+  {
+   "label": "<b>TEAM SIZE</b>",
+   "number_card_name": "Team Size"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Player Holdings",
+   "link_to": "Holding",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Traders List",
+   "link_to": "User",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create new User",
+   "link_to": "User",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "User banks",
+   "link_to": "Bank",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Players"
+}
