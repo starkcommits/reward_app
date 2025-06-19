@@ -147,8 +147,6 @@ const Home = () => {
       filters: [['home', '=', true]],
     })
 
-  console.log(marketingBannerData)
-
   const {
     data: marketData,
     isLoading: marketDataLoading,
@@ -187,11 +185,7 @@ const Home = () => {
     }
   }, [marketData]) // Depend only on loading state
 
-  console.log('Markets: ', markets)
-
   useFrappeEventListener('market_event', (updatedMarket) => {
-    console.log('Updated Market:', updatedMarket)
-
     setMarkets((prevMarkets) => {
       const updatedMarkets = {
         ...prevMarkets,

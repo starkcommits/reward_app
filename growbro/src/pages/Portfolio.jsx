@@ -78,8 +78,7 @@ const Portfolio = () => {
       currentUser && activeTab === 'completed' ? undefined : null
     )
 
-  console.log(holdingData)
-  console.log('completedTradesData', completedTradesData)
+  console.log('Marketwise: ', holdingData)
 
   useEffect(() => {
     const tab = searchParams.get('tab')

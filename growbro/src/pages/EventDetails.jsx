@@ -66,10 +66,12 @@ const EventDetails = () => {
         'name',
         'creation',
         'first_user_order_id',
+        'first_user_name',
         'first_user_price',
         'first_user_id',
         'second_user_order_id',
         'second_user_price',
+        'second_user_name',
         'second_user_id',
         'quantity',
       ],
@@ -82,11 +84,11 @@ const EventDetails = () => {
     activeTab === 'activity' ? undefined : null
   )
 
+  console.log('Activity: ', tradesData)
+
   useFrappeDocTypeEventListener('Trades', (updatedTrade) => {
     refetchTrades()
   })
-
-  console.log('Trades: ', tradesData)
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -110,13 +112,11 @@ const EventDetails = () => {
   }, [marketData])
 
   useFrappeEventListener('market_event', (updatedData) => {
-    console.log('Hello: ', updatedData)
     if (updatedData.name !== id) return
-    console.log('Updated Data: ', updatedData)
+
     setMarket(updatedData)
   })
 
-  console.log('market:', market.subcategory)
   // Listen for real-time updates
   // useFrappeEventListener('market_event', (updatedMarket) => {
   //   if (updatedMarket.name === market.name) {
@@ -232,13 +232,13 @@ const EventDetails = () => {
           </button>
         </div>
 
-        <div className="mx-auto bg-white rounded-xl shadow-sm p-4">
+        <div className="mx-auto bg-white rounded-xl shadow-sm p-4 ">
           <h1 className="text-md font-bold text-left text-gray-900 mb-6">
             About the event
           </h1>
 
           {/* Event Stats Grid */}
-          <div className="grid grid-cols-2 gap-8 mb-8">
+          <div className="grid grid-cols-2 gap-8">
             <div>
               <p className="text-gray-500 mb-1 text-xs">Traders</p>
               <p className="text-sm font-bold text-gray-900">
@@ -279,7 +279,7 @@ const EventDetails = () => {
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
-          className="w-full"
+          className="w-full mt-6"
         >
           <TabsList className="w-full">
             <TabsTrigger value="activity" className="w-full">
@@ -303,12 +303,14 @@ const EventDetails = () => {
               </div>
               <div className="divide-y divide-gray-100">
                 {tradesData?.map((match) => {
-                  const firstUser = match?.first_user_id.split('@')[0]
-                  const secondUser = match?.second_user_id.split('@')[0]
+                  const firstUser = match?.first_user_name?.split('@')[0]
+                  const secondUser = match?.second_user_name?.split('@')[0]
                   const formatName = (name) =>
-                    name.length > 10
-                      ? name.charAt(0).toUpperCase() + name.slice(1, 10) + '…'
-                      : name.charAt(0).toUpperCase() + name.slice(1)
+                    name?.length > 10
+                      ? name?.charAt(0)?.toUpperCase() +
+                        name?.slice(1, 10) +
+                        '…'
+                      : name?.charAt(0)?.toUpperCase() + name?.slice(1)
                   return (
                     <div
                       key={match?.name}
@@ -319,12 +321,12 @@ const EventDetails = () => {
                         <div className="flex flex-col items-center w-1/3">
                           <div className="flex items-center gap-2">
                             <div className="h-10 w-10 rounded-full bg-blue-200 shadow-inner flex items-center justify-center font-semibold text-blue-900">
-                              {firstUser.charAt(0).toUpperCase()}
+                              {firstUser?.charAt(0).toUpperCase()}
                             </div>
                           </div>
                           <span
                             className="text-sm mt-1 font-medium text-gray-700"
-                            title={match.first_user_id}
+                            title={match?.first_user_id}
                           >
                             {formatName(firstUser)}
                           </span>
@@ -341,7 +343,7 @@ const EventDetails = () => {
                                     width: `50%`,
                                   }}
                                 >
-                                  {match.first_user_price}
+                                  {match?.first_user_price}
                                 </div>
                                 <div
                                   className="bg-rose-400 flex items-center justify-center text-xs text-white font-bold"
@@ -349,7 +351,7 @@ const EventDetails = () => {
                                     width: `50%`,
                                   }}
                                 >
-                                  {match.second_user_price}
+                                  {match?.second_user_price}
                                 </div>
                               </>
                             ) : (
@@ -357,18 +359,18 @@ const EventDetails = () => {
                                 <div
                                   className="bg-blue-400 flex items-center justify-center text-xs text-white font-bold"
                                   style={{
-                                    width: `${match.first_user_price * 10}%`,
+                                    width: `${match?.first_user_price * 10}%`,
                                   }}
                                 >
-                                  {match.first_user_price}
+                                  {match?.first_user_price}
                                 </div>
                                 <div
                                   className="bg-rose-400 flex items-center justify-center text-xs text-white font-bold"
                                   style={{
-                                    width: `${match.second_user_price * 10}%`,
+                                    width: `${match?.second_user_price * 10}%`,
                                   }}
                                 >
-                                  {match.second_user_price}
+                                  {match?.second_user_price}
                                 </div>
                               </>
                             )}
@@ -378,12 +380,12 @@ const EventDetails = () => {
                         <div className="flex flex-col items-center w-1/3">
                           <div className="flex items-center gap-2">
                             <div className="h-10 w-10 rounded-full bg-red-200 shadow-inner flex items-center justify-center font-semibold text-red-900">
-                              {secondUser.charAt(0).toUpperCase()}
+                              {secondUser?.charAt(0).toUpperCase()}
                             </div>
                           </div>
                           <span
                             className="text-sm mt-1 font-medium text-gray-700"
-                            title={match.second_user_id}
+                            title={match?.second_user_id}
                           >
                             {formatName(secondUser)}
                           </span>
