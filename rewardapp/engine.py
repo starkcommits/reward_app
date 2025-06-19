@@ -56,8 +56,6 @@ def trades():
             return {"status": "error", "message": "Missing 'trades' key in request data"}
 
         for trade in data.trades:
-            first_user_name = frappe.db.get_value('User',trade["first_user_id"],'full_name')
-            second_user_name = frappe.db.get_value('User',trade["second_user_id"],'full_name')
             trade_doc = frappe.get_doc({
                 "doctype": "Trades",
                 "first_user_order_id": trade["first_user_order_id"],
@@ -67,9 +65,7 @@ def trades():
                 "second_user_id": trade["second_user_id"],
                 "first_user_price": trade["first_user_price"],
                 "second_user_price": trade["second_user_price"],
-                "quantity": trade["quantity"],
-                "first_user_name": first_user_name,
-                "second_user_name": second_user_name
+                "quantity": trade["quantity"]
             })
             trade_doc.insert(ignore_permissions=True)
             
