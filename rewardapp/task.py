@@ -27,14 +27,16 @@ def execute():
         frappe.log_error("Error in auto cancelling", f"{str(e)}")
         frappe.throw(f"Error in auto cancelling: {str(e)}")
 
-def get_last_resolved_market():
+def get_last_resolved_market(subcategory, frequency):
     """
     Get the last resolved market record for crypto category
     """
     try:
         filters = {
             'status': 'RESOLVED',
-            'category': 'Crypto'
+            'category': 'Crypto',
+            'subcategory': subcategory,
+            'frequency': frequency
         }
         
         last_market = frappe.get_list(
@@ -72,7 +74,7 @@ def extract_price_from_question(question):
         frappe.log_error(f"Error extracting price from question: {str(e)}")
         return None
 
-def calculate_new_price(question_price, closing_value):
+def calculate_new_price(question_price, closing_value, subcategory, frequency):
     """
     Calculate new price based on closing value vs question price
     If closing value < question price: new price = closing value + 100
@@ -81,14 +83,22 @@ def calculate_new_price(question_price, closing_value):
     try:
         # If closing value is less than question price, add 100 to closing value
         # Otherwise subtract 100 from closing value
+        step_size = 100
+        if frequency == 30:
+            step_size = 200
+            
+        if subcategory == 'ethereum':
+            step_size = step_size / 10 
+        
+
         if closing_value < question_price:
-            new_price = closing_value + 100
+            new_price = closing_value + step_size
         else:
-            new_price = closing_value - 100
+            new_price = closing_value - step_size
             
         # Ensure price doesn't go negative
         if new_price < 0:
-            new_price = closing_value + 100
+            new_price = closing_value + step_size
             
         return round(new_price, 2)
         
@@ -127,13 +137,13 @@ def generate_new_question(template_question, new_price, new_time):
         return template_question
 
 @frappe.whitelist(allow_guest=True)
-def create_new_market_record():
+def create_new_market_record(subcategory = 'bitcoin', frequency = 10):
     """
     Create a new market record by duplicating the last resolved one
     """
     try:
         # Get the template market
-        template_market = get_last_resolved_market()
+        template_market = get_last_resolved_market(subcategory, frequency)
         frappe.log_error("Resolved Market",template_market)
         if not template_market:
             frappe.log_error("No resolved market found")
@@ -153,7 +163,7 @@ def create_new_market_record():
             return {"status": "error", "message": "Could not extract price from question"}
         
         # Calculate new price
-        new_price = calculate_new_price(question_price, closing_value)
+        new_price = calculate_new_price(question_price, closing_value, subcategory, frequency)
         if new_price is None:
             frappe.log_error("Could not calculate new price")
             return {"status": "error", "message": "Could not calculate new price"}
@@ -173,7 +183,7 @@ def create_new_market_record():
         
         # Copy ALL fields from template except the ones we want to reset
         exclude_fields = [
-            'name', 'creation', 'modified', 'modified_by', 'owner', 'docstatus',
+            'name', 'creation', 'modified', 'modified_by', 'owner', 'docstatus', 'version',
             'question', 'status', 'total_investment', 'total_traders', 'end_result', 'closing_time'
         ]
         
@@ -187,12 +197,10 @@ def create_new_market_record():
         new_market.total_investment = 0
         new_market.total_traders = 0
         new_market.end_result = ''
-        new_market.version = 0
         
         # Insert the new market
         new_market.insert()
         frappe.db.commit()
-
         success_message = f"Created new crypto market: {new_market.name}"
         frappe.logger().info(success_message)
         
