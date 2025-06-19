@@ -105,7 +105,7 @@ def wallet_operation(doc, method):
             frappe.db.commit()
 
             try:
-                url = "http://13.202.185.148:8086/orders/"
+                url = "http://127.0.0.1:8086/orders/"
                 response = requests.post(url, json=payload)
 
                 if response.status_code != 201:
@@ -237,7 +237,7 @@ def wallet_operation(doc, method):
 
             if doc.market_status != "CLOSE":
                 try:
-                    url = f"http://13.202.185.148:8086/orders/{doc.name}"
+                    url = f"http://127.0.0.1:8086/orders/{doc.name}"
                     response = requests.delete(url)
 
                     if response.status_code != 200:

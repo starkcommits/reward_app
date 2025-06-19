@@ -60,8 +60,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
   const [yesPrice, setYesPrice] = useState(position.yes_price)
   const [noPrice, setNoPrice] = useState(position.no_price)
 
-  console.log('Position     ASDas', position)
-
   const { currentUser } = useFrappeAuth()
   const { createDoc } = useFrappeCreateDoc()
   const { call } = useFrappePostCall(
@@ -115,7 +113,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
   }
 
   const handleCancelOrders = async (market_id, setIsCancelOpen) => {
-    console.log('Cancel Orders', market_id)
     try {
       await call({
         market_id: market_id,
@@ -123,7 +120,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
       })
       toast.success('Exit Orders Canceled Successfully.')
       refetchActiveHoldings()
-      console.log('11111111111', refetchActiveHoldings)
       setIsCancelOpen(false)
     } catch (err) {
       console.log(err)
@@ -140,7 +136,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
   ) => {
     try {
       if (position?.ACTIVE?.YES?.total_quantity > 0 && yesEnabled) {
-        console.log('Yes')
         await createDoc('Orders', {
           market_id: position.market_id,
           quantity:
@@ -212,8 +207,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
     navigate(`/event/${position.market_id}`)
   }
 
-  console.log('Entered:', position)
-
   return (
     <>
       <div key={position.market_id} className="p-4 w-full cursor-pointer">
@@ -259,7 +252,7 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
               {position.question}
             </span>
           </div>
-          {console.log('ASdsadas', 'EXITING' in position)}
+
           {'ACTIVE' in position ? (
             <div className="flex justify-between gap-4 text-sm mb-4">
               <div>
@@ -332,13 +325,19 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
                 handleCancelOrders={handleCancelOrders}
               />
             ) : null}
-            {'ACTIVE' in position ? (
+            {!('EXITING' in position) && 'ACTIVE' in position ? (
               <ExitHoldingsDialog
                 position={position}
                 handleExitPositions={handleExitPositions}
               />
             ) : null}
           </div>
+        </div>
+
+        <div>
+          {'EXITED' in position && (
+            <p className="text-md font-semibold">Exited</p>
+          )}
         </div>
       </div>
     </>

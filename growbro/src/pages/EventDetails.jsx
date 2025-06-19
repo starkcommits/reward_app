@@ -86,8 +86,6 @@ const EventDetails = () => {
     refetchTrades()
   })
 
-  console.log('Trades: ', tradesData)
-
   const formatDate = (dateString) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', {
@@ -110,13 +108,11 @@ const EventDetails = () => {
   }, [marketData])
 
   useFrappeEventListener('market_event', (updatedData) => {
-    console.log('Hello: ', updatedData)
     if (updatedData.name !== id) return
-    console.log('Updated Data: ', updatedData)
+
     setMarket(updatedData)
   })
 
-  console.log('market:', market.subcategory)
   // Listen for real-time updates
   // useFrappeEventListener('market_event', (updatedMarket) => {
   //   if (updatedMarket.name === market.name) {

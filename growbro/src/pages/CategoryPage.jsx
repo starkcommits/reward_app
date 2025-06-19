@@ -41,8 +41,6 @@ const CategoryPage = () => {
 
   const { call } = useFrappePostCall()
 
-  console.log(currentCategory)
-
   // useEffect(() => {
   //   console.log('Hello')
   //   call('frappe.client.insert', {
@@ -66,7 +64,6 @@ const CategoryPage = () => {
   }, [categoryDataLoading])
 
   useFrappeDocTypeEventListener('Market', (updatedMarket) => {
-    console.log('Updated Market Doctype:', updatedMarket)
     if (updatedMarket.category !== id) {
       return // Exit if it doesn't match the category
     }
@@ -85,10 +82,7 @@ const CategoryPage = () => {
     })
   })
 
-  console.log('Category Markets:', categoryMarkets)
-
   useFrappeEventListener('market_event', (updatedMarket) => {
-    console.log('Updated Market:', updatedMarket)
     if (updatedMarket.category !== id) {
       return // Exit if it doesn't match the category
     }
