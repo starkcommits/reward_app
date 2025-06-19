@@ -335,9 +335,11 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
         </div>
 
         <div>
-          {'EXITED' in position && (
-            <p className="text-md font-semibold">Exited</p>
-          )}
+          {!('EXITING' in position) &&
+            !('ACTIVE' in position) &&
+            'EXITED' in position && (
+              <p className="text-md font-semibold">Exited</p>
+            )}
         </div>
       </div>
     </>
