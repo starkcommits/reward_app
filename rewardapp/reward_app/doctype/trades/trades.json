@@ -10,11 +10,13 @@
   "first_user_order_id",
   "first_user_id",
   "first_user_price",
+  "first_user_name",
   "column_break_akxa",
   "quantity",
   "second_user_order_id",
   "second_user_id",
-  "second_user_price"
+  "second_user_price",
+  "second_user_name"
  ],
  "fields": [
   {
@@ -65,12 +67,22 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Second User ID"
+  },
+  {
+   "fieldname": "first_user_name",
+   "fieldtype": "Read Only",
+   "label": "First User Name"
+  },
+  {
+   "fieldname": "second_user_name",
+   "fieldtype": "Read Only",
+   "label": "Second User Name"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-04-09 17:39:27.127014",
+ "modified": "2025-06-19 13:22:29.963978",
  "modified_by": "Administrator",
  "module": "Reward App",
  "name": "Trades",
