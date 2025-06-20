@@ -1,0 +1,79 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-02 15:26:07.272102",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "bank_name",
+  "branch_name",
+  "column_break_klcu",
+  "ifsc_code",
+  "address",
+  "column_break_qkcy",
+  "country",
+  "is_active"
+ ],
+ "fields": [
+  {
+   "fieldname": "bank_name",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Bank Name",
+   "options": "Bank"
+  },
+  {
+   "fieldname": "ifsc_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "IFSC Code"
+  },
+  {
+   "fieldname": "branch_name",
+   "fieldtype": "Data",
+   "label": "Branch Name"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Is Active"
+  },
+  {
+   "fetch_from": "bank_name.country",
+   "fieldname": "country",
+   "fieldtype": "Read Only",
+   "in_list_view": 1,
+   "label": "Country"
+  },
+  {
+   "fieldname": "column_break_klcu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_qkcy",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-02 15:39:03.626807",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "User Bank Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

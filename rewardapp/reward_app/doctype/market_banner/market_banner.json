@@ -1,0 +1,121 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:banner_name",
+ "creation": "2025-05-05 17:35:41.471794",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "banner_name",
+  "image",
+  "column_break_jmvy",
+  "news",
+  "news_position",
+  "column_break_cdwp",
+  "offer",
+  "offer_position",
+  "column_break_xwsa",
+  "home",
+  "home_position"
+ ],
+ "fields": [
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Image"
+  },
+  {
+   "fieldname": "column_break_jmvy",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "home",
+   "fieldtype": "Check",
+   "label": "Home"
+  },
+  {
+   "fieldname": "column_break_cdwp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "news",
+   "fieldtype": "Check",
+   "label": "News"
+  },
+  {
+   "depends_on": "eval: doc.news==1;",
+   "fieldname": "news_position",
+   "fieldtype": "Int",
+   "label": "News Position"
+  },
+  {
+   "depends_on": "eval: doc.home==1;",
+   "fieldname": "home_position",
+   "fieldtype": "Int",
+   "label": "Home Position"
+  },
+  {
+   "fieldname": "column_break_xwsa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "offer",
+   "fieldtype": "Check",
+   "label": "Offer"
+  },
+  {
+   "depends_on": "eval: doc.offer == 1;",
+   "fieldname": "offer_position",
+   "fieldtype": "Data",
+   "label": "Offer Position"
+  },
+  {
+   "fieldname": "banner_name",
+   "fieldtype": "Data",
+   "label": "Banner Name",
+   "unique": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-06-17 18:20:29.996703",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Market Banner",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Trader",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

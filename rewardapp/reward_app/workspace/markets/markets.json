@@ -1,0 +1,80 @@
+{
+ "charts": [
+  {
+   "chart_name": "Traders by category",
+   "label": "<b>TRADERS BY CATEGORY</b>"
+  }
+ ],
+ "content": "[{\"id\":\"A9h2Qbl1pv\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">MARKET ANALYTICS</span>\",\"col\":12}},{\"id\":\"PWFoe9zCMj\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>ACTIVE MARKET CATEGORIES</b>\",\"col\":3}},{\"id\":\"XiObPzYDg1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>Open Markets</b>\",\"col\":3}},{\"id\":\"50e11ed7Qe\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>CLOSED MARKETS</b>\",\"col\":3}},{\"id\":\"XQWarybmS1\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>PAUSED MARKETS</b>\",\"col\":3}},{\"id\":\"eAyzBivwKf\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"<b>UNRESOLVED MARKETS</b>\",\"col\":3}},{\"id\":\"p-lhH61ZL4\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"rMd2egM8_u\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>SHORTCUT</b></span>\",\"col\":12}},{\"id\":\"CEXf-mBZOk\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create market category\",\"col\":3}},{\"id\":\"KWYd_LMaqA\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create market\",\"col\":3}},{\"id\":\"fyHBV2jF4u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Create market banner\",\"col\":3}},{\"id\":\"Jb-koqlcBp\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"FELW6B9i3l\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>CHART</b></span>\",\"col\":12}},{\"id\":\"CFZIjMJh1k\",\"type\":\"chart\",\"data\":{\"chart_name\":\"<b>TRADERS BY CATEGORY</b>\",\"col\":12}}]",
+ "creation": "2025-05-10 12:05:41.544370",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "table",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Markets",
+ "links": [],
+ "modified": "2025-05-10 16:44:59.629309",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Markets",
+ "number_cards": [
+  {
+   "label": "<b>ACTIVE MARKET CATEGORIES</b>",
+   "number_card_name": "Active market Categories"
+  },
+  {
+   "label": "<b>Open Markets</b>",
+   "number_card_name": "Total active Markets"
+  },
+  {
+   "label": "<b>CLOSED MARKETS</b>",
+   "number_card_name": "Closed Markets"
+  },
+  {
+   "label": "<b>PAUSED MARKETS</b>",
+   "number_card_name": "Paused Markets"
+  },
+  {
+   "label": "<b>UNRESOLVED MARKETS</b>",
+   "number_card_name": "Unresolved Markets"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 33.0,
+ "shortcuts": [
+  {
+   "color": "Green",
+   "doc_view": "New",
+   "label": "Create market category",
+   "link_to": "Market Category",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create market",
+   "link_to": "Market",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "New",
+   "label": "Create market banner",
+   "link_to": "Market Banner",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Markets"
+}
