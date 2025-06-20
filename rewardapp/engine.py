@@ -151,7 +151,7 @@ def trades():
                         trade_quantity = 0
 
                     # Reward logic
-                    reward = quantity * (holding_doc.exit_price - holding_doc.price)
+                    reward = quantity * holding_doc.exit_price
                     holding_doc.returns += reward
 
                     holding_doc.save(ignore_permissions=True)
@@ -179,7 +179,7 @@ def trades():
                         WHERE name = %s
                     """, (new_balance, wallet_name))
                     
-                    exited_investment = quantity_to_fill * holding_doc.price
+                    exited_investment = quantity * holding_doc.price
                     frappe.db.sql("""
                         UPDATE `tabMarket`
                         SET total_investment = total_investment - %s
@@ -257,7 +257,7 @@ def market(doc, method):
             # For debugging
             frappe.logger().info(f"Sending payload to market engine: {payload}")
             
-            url = "http://127.0.0.1:8086/markets/"
+            url = "http://13.202.185.148:8086/markets/"
             response = requests.post(url, json=payload)
             
             if response.status_code != 201:
@@ -293,7 +293,7 @@ def market(doc, method):
                 order_doc.save()  # Triggers hooks
 
             frappe.db.commit()
-            url=f"http://127.0.0.1:8086/markets/{doc.name}/close"
+            url=f"http://13.202.185.148:8086/markets/{doc.name}/close"
             response = requests.post(url)
                 
             if response.status_code != 200:
@@ -304,6 +304,7 @@ def market(doc, method):
                 SELECT
                     user_id,
                     opinion_type,
+                    buy_order,
                     SUM(quantity - filled_quantity) AS total_quantity
                 FROM `tabHolding`
                 WHERE market_id = %s
@@ -316,6 +317,7 @@ def market(doc, method):
                 if row["opinion_type"] == doc.end_result:
                     user_id = row["user_id"]
                     qty = row["total_quantity"] or 0
+                    profit = qty * 10
                     wallet_data = frappe.db.sql("""
                         SELECT name, balance FROM `tabUser Wallet`
                         WHERE user = %s AND is_active = 1
@@ -330,7 +332,7 @@ def market(doc, method):
                     available_balance = wallet_data[0]["balance"]
 
                     # Calculate new balance
-                    new_balance = available_balance + qty * 10
+                    new_balance = available_balance + profit
                     
                     # Update wallet balance
                     frappe.db.sql("""
@@ -338,6 +340,19 @@ def market(doc, method):
                         SET balance = %s
                         WHERE name = %s
                     """, (new_balance, wallet_name))
+
+                    frappe.get_doc({
+                        'doctype': "Transaction Logs",
+                        'market_id': doc.name,
+                        'user': user_id,
+                        'wallet_type': 'Main',
+                        'order_id': row["buy_order"],
+                        'transaction_amount': profit,
+                        'transaction_type': 'Credit',
+                        'transaction_status': 'Success',
+                        'transaction_method': 'WALLET'
+                    }).insert(ignore_permissions=True)
+
             
             frappe.db.sql("""
                 UPDATE `tabHolding`
@@ -588,6 +603,7 @@ def get_marketwise_holding():
             h.market_id,
             h.opinion_type,
             h.status,
+            MAX(h.modified) AS last_updated,
             SUM(h.quantity) AS total_quantity,
             SUM(h.filled_quantity) AS total_filled_quantity,
             SUM((h.quantity - h.filled_quantity) * h.price) AS total_invested,
@@ -608,6 +624,8 @@ def get_marketwise_holding():
             m.question,
             m.yes_price,
             m.no_price
+        ORDER BY
+            last_updated DESC
     """, {"user_id": user_id}, as_dict=True)
 
     output = {}
@@ -734,7 +752,7 @@ def holding(doc,method):
 
         # API call to sync order update
         try:
-            url = "http://127.0.0.1:8086/orders/update_quantity"
+            url = "http://13.202.185.148:8086/orders/update_quantity"
             response = requests.put(url, json=payload)
             if response.status_code != 201:
                 frappe.log_error(f"Error response: {response.text}")
@@ -887,7 +905,7 @@ def update_order_price(user_id, order_id, price):
             "new_price": price
         }
         try:
-            url = "http://127.0.0.1:8086/orders/update_price"
+            url = "http://13.202.185.148:8086/orders/update_price"
             response = requests.put(url, json=payload)
             
             if response.status_code != 201:

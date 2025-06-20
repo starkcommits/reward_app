@@ -92,9 +92,9 @@ def calculate_new_price(question_price, closing_value, subcategory, frequency):
         
 
         if closing_value < question_price:
-            new_price = closing_value + step_size
-        else:
             new_price = closing_value - step_size
+        else:
+            new_price = closing_value + step_size
             
         # Ensure price doesn't go negative
         if new_price < 0:
@@ -183,7 +183,7 @@ def create_new_market_record(subcategory = 'bitcoin', frequency = 10):
         
         # Copy ALL fields from template except the ones we want to reset
         exclude_fields = [
-            'name', 'creation', 'modified', 'modified_by', 'owner', 'docstatus', 'version',
+            'name', 'creation', 'modified', 'modified_by', 'owner', 'docstatus', 'version', 'yes_price','no_price'
             'question', 'status', 'total_investment', 'total_traders', 'end_result', 'closing_time'
         ]
         
@@ -197,6 +197,8 @@ def create_new_market_record(subcategory = 'bitcoin', frequency = 10):
         new_market.total_investment = 0
         new_market.total_traders = 0
         new_market.end_result = ''
+        new_market.yes_price = 5.0
+        new_market.no_price = 5.0
         
         # Insert the new market
         new_market.insert()
