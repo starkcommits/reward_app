@@ -57,7 +57,7 @@ ChartJS.register(
 const OrdersTab = () => {
   const { id } = useParams()
   const [activeOrders, setActiveOrders] = useState({})
-  const { currentUser, isLoading } = useFrappeAuth()
+  const { currentUser } = useFrappeAuth()
 
   const {
     data: activeOrdersData,
@@ -91,9 +91,9 @@ const OrdersTab = () => {
       orderBy: {
         field: 'creation',
         order: 'desc',
-      },
+      },  
     },
-    currentUser ? undefined : null
+    currentUser ? ['get_all_orders'] : null
   )
 
   useEffect(() => {
