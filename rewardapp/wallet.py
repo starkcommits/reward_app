@@ -8,8 +8,8 @@ def create_transaction_log(doc):
         user_id = doc.user_id or frappe.session.user
         total_amount = doc.amount * doc.quantity
 
-        promo_balance = frappe.db.get_value("Promotional Wallet",user_id, 'balance')
-        main_balance = frappe.db.get_value("User Wallet",user_id, 'balance')
+        promo_balance = frappe.db.get_value("Promotional Wallet",user_id, 'balance') or 0
+        main_balance = frappe.db.get_value("User Wallet",user_id, 'balance') or 0
 
         if promo_balance + main_balance < total_amount:
             raise Exception("Insufficient Balance")

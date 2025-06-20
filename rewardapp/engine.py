@@ -304,6 +304,7 @@ def market(doc, method):
                 SELECT
                     user_id,
                     opinion_type,
+                    buy_order,
                     SUM(quantity - filled_quantity) AS total_quantity
                 FROM `tabHolding`
                 WHERE market_id = %s
@@ -316,6 +317,7 @@ def market(doc, method):
                 if row["opinion_type"] == doc.end_result:
                     user_id = row["user_id"]
                     qty = row["total_quantity"] or 0
+                    profit = qty * 10
                     wallet_data = frappe.db.sql("""
                         SELECT name, balance FROM `tabUser Wallet`
                         WHERE user = %s AND is_active = 1
@@ -330,7 +332,7 @@ def market(doc, method):
                     available_balance = wallet_data[0]["balance"]
 
                     # Calculate new balance
-                    new_balance = available_balance + qty * 10
+                    new_balance = available_balance + profit
                     
                     # Update wallet balance
                     frappe.db.sql("""
@@ -338,6 +340,19 @@ def market(doc, method):
                         SET balance = %s
                         WHERE name = %s
                     """, (new_balance, wallet_name))
+
+                    frappe.get_doc({
+                        'doctype': "Transaction Logs",
+                        'market_id': doc.name,
+                        'user': user_id,
+                        'wallet_type': 'Main',
+                        'order_id': row["buy_order"],
+                        'transaction_amount': profit,
+                        'transaction_type': 'Credit',
+                        'transaction_status': 'Success',
+                        'transaction_method': 'WALLET'
+                    }).insert(ignore_permissions=True)
+
             
             frappe.db.sql("""
                 UPDATE `tabHolding`
@@ -588,6 +603,7 @@ def get_marketwise_holding():
             h.market_id,
             h.opinion_type,
             h.status,
+            MAX(h.modified) AS last_updated,
             SUM(h.quantity) AS total_quantity,
             SUM(h.filled_quantity) AS total_filled_quantity,
             SUM((h.quantity - h.filled_quantity) * h.price) AS total_invested,
@@ -608,6 +624,8 @@ def get_marketwise_holding():
             m.question,
             m.yes_price,
             m.no_price
+        ORDER BY
+            last_updated DESC
     """, {"user_id": user_id}, as_dict=True)
 
     output = {}
