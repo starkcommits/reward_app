@@ -131,9 +131,7 @@ const EventDetails = () => {
     newSearchParams.set('tab', value)
 
     // Update URL without refreshing the page
-    navigate(`${location.pathname}?${newSearchParams.toString()}`, {
-      replace: true,
-    })
+    navigate(`${location.pathname}?${newSearchParams.toString()}`)
   }
 
   if (marketDataLoading) {
