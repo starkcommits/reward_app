@@ -135,7 +135,10 @@ const Wallet = () => {
         'wallet_type',
         'transaction_status',
       ],
-      filters: [['user', '=', currentUser]],
+      filters: [
+        ['user', '=', currentUser],
+        // ['transaction_type', 'in', ['Credit', 'Debit']],
+      ],
       limit: 10,
       orderBy: {
         field: 'creation',
