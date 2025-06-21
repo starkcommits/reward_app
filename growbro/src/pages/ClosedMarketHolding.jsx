@@ -287,7 +287,7 @@ const ClosedMarketHolding = () => {
         <span className="text-sm font-semibold text-white">+12.5%</span>
       </div> */}
                 </div>
-                <div className="text-3xl font-bold text-white flex items-center gap-4">
+                <div className="text-2xl font-bold text-white flex items-center gap-4">
                   <div>
                     ₹
                     {closedHoldingData
@@ -307,19 +307,19 @@ const ClosedMarketHolding = () => {
         <span className="text-sm font-semibold text-white">+12.5%</span>
       </div> */}
                 </div>
-                <div className="text-3xl font-bold text-white flex items-center gap-4">
+                <div className="text-2xl font-bold text-white flex items-center gap-4">
                   {closedHoldingData?.reduce(
                     (acc, value) => acc + value.returns,
                     0
                   ) >= 0 ? (
-                    <div className="text-green-600">
+                    <div className="">
                       +₹
                       {closedHoldingData
                         ?.reduce((acc, value) => acc + value.returns, 0)
                         .toFixed(2)}
                     </div>
                   ) : (
-                    <div className="text-red-600">
+                    <div className="">
                       ₹
                       {closedHoldingData
                         ?.reduce((acc, value) => acc + value.returns, 0)

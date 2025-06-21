@@ -15,6 +15,7 @@ import {
   useFrappeAuth,
   useFrappeCreateDoc,
   useFrappeGetDoc,
+  useSWRConfig,
 } from 'frappe-react-sdk'
 import { Slider } from '@/components/ui/slider'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -33,7 +34,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Clock, Minus, Plus } from 'lucide-react'
 import { DateTimePicker } from './ui/date-picker'
-import { max } from 'lodash'
+import { isArray, max } from 'lodash'
 
 const BuyTradeSheet = ({
   marketId,
@@ -45,6 +46,7 @@ const BuyTradeSheet = ({
 }) => {
   const [selectedDateTime, setSelectedDateTime] = useState(null)
   const { createDoc, isLoading: createDocLoading } = useFrappeCreateDoc()
+  const { mutate } = useSWRConfig()
 
   const { currentUser } = useFrappeAuth()
 
@@ -132,6 +134,8 @@ const BuyTradeSheet = ({
           timestamp: new Date().toISOString(),
         },
       })
+
+      mutate((key) => Array.isArray(key) && key[0] === 'get_all_orders')
 
       toast.success(`Buy Order Placed.`)
 

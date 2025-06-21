@@ -135,7 +135,7 @@ const Wallet = () => {
         'wallet_type',
         'transaction_status',
       ],
-      filters: [['owner', '=', currentUser]],
+      filters: [['user', '=', currentUser]],
       limit: 10,
       orderBy: {
         field: 'creation',
@@ -164,7 +164,7 @@ const Wallet = () => {
         'transaction_method',
       ],
       filters: [
-        ['owner', '=', currentUser],
+        ['user', '=', currentUser],
         ['transaction_type', '=', 'Credit'],
       ],
       limit: 10,
@@ -195,7 +195,7 @@ const Wallet = () => {
         'transaction_method',
       ],
       filters: [
-        ['owner', '=', currentUser],
+        ['user', '=', currentUser],
         ['transaction_type', '=', 'Debit'],
       ],
       limit: 10,
