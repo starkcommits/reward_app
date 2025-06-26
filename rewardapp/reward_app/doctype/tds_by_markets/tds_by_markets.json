@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-26 17:43:01.778440",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "user_id",
+  "market_id",
+  "market",
+  "opinion_type",
+  "event_date",
+  "winnings",
+  "tds_amount",
+  "net_amount",
+  "quarter",
+  "tds_deduction_date",
+  "amount_invested"
+ ],
+ "fields": [
+  {
+   "fetch_from": "user_id.market_id",
+   "fieldname": "market_id",
+   "fieldtype": "Data",
+   "label": "Market ID"
+  },
+  {
+   "fetch_from": "user_id.question",
+   "fieldname": "market",
+   "fieldtype": "Read Only",
+   "label": "Market"
+  },
+  {
+   "fetch_from": "user_id.closing_time",
+   "fieldname": "event_date",
+   "fieldtype": "Date",
+   "label": "Event Date"
+  },
+  {
+   "fetch_from": "user_id.returns",
+   "fieldname": "winnings",
+   "fieldtype": "Float",
+   "label": "Winnings"
+  },
+  {
+   "fieldname": "tds_amount",
+   "fieldtype": "Float",
+   "label": "TDS Amount"
+  },
+  {
+   "fieldname": "net_amount",
+   "fieldtype": "Float",
+   "label": "Net Amount"
+  },
+  {
+   "fieldname": "tds_deduction_date",
+   "fieldtype": "Date",
+   "label": "TDS Deduction Date"
+  },
+  {
+   "fieldname": "quarter",
+   "fieldtype": "Data",
+   "label": "Quarter"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Link",
+   "label": "User ID",
+   "options": "Holding"
+  },
+  {
+   "fetch_from": "user_id.opinion_type",
+   "fieldname": "opinion_type",
+   "fieldtype": "Read Only",
+   "label": "Opinion Type"
+  },
+  {
+   "fieldname": "amount_invested",
+   "fieldtype": "Float",
+   "label": "Amount Invested"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-06-26 18:37:25.241655",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "TDS by Markets",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

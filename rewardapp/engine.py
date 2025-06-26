@@ -117,79 +117,97 @@ def trades():
                 frappe.db.commit()
 
             else:
-                result = frappe.db.sql("""
-                    SELECT name
-                    FROM `tabHolding`
-                    WHERE market_id = %s
-                    AND status = 'EXITING'
-                    AND order_id = %s
-                    AND user_id = %s
-                    AND opinion_type = %s
-                    ORDER BY price
-                """, (
-                    trade["market_id"],
-                    trade["first_user_order_id"],
-                    trade["first_user_id"],
-                    trade["first_user_option"]
-                ), as_dict=True)
-
-                trade_quantity = quantity
-
-                for row in result:
-                    holding_doc = frappe.get_doc("Holding", row["name"])
-                    remaining_quantity = holding_doc.quantity - holding_doc.filled_quantity
-                    quantity = 0
-
-                    if remaining_quantity <= trade_quantity:
-                        trade_quantity -= remaining_quantity
-                        holding_doc.filled_quantity = holding_doc.quantity
-                        holding_doc.status = "EXITED"
-                        quantity = remaining_quantity
-                    else:
-                        quantity = trade_quantity
-                        holding_doc.filled_quantity += trade_quantity
-                        trade_quantity = 0
+                holding_id = frappe.db.get_value("Orders",trade["first_user_order_id"],'holding_id') or None
+                if holding_id:
+                    holding_doc = frappe.get_doc("Holding", holding_id)
+                    quantity = holding_doc.quantity - holding_doc.filled_quantity
+                    holding_doc.status = "EXITED"
+                    holding_doc.filled_quantity = holding_doc.quantity
 
                     # Reward logic
                     reward = quantity * holding_doc.exit_price
                     holding_doc.returns += reward
-
-                    holding_doc.save(ignore_permissions=True)
-
-                    # Lock and fetch wallet
-                    wallet_data = frappe.db.sql("""
-                        SELECT name, balance FROM `tabUser Wallet`
-                        WHERE user = %s AND is_active = 1
-                        FOR UPDATE
-                    """, (trade["first_user_id"],), as_dict=True)
-
-                    if not wallet_data:
-                        frappe.db.rollback()
-                        return {"status": "error", "message": "No active wallet found."}
-
-                    wallet_name = wallet_data[0]["name"]
-                    available_balance = wallet_data[0]["balance"]
-
-                    new_balance = available_balance + reward
-
-                    # Update wallet
-                    frappe.db.sql("""
-                        UPDATE `tabUser Wallet`
-                        SET balance = %s
-                        WHERE name = %s
-                    """, (new_balance, wallet_name))
                     
-                    exited_investment = quantity * holding_doc.price
-                    frappe.db.sql("""
-                        UPDATE `tabMarket`
-                        SET total_investment = total_investment - %s
-                        WHERE name = %s
-                    """, (exited_investment, market_id))
+                    holding_doc.save(ignore_permissions=True)
+                    
+                    available_balance = frappe.db.get_value("User Wallet",trade["first_user_id"],'balance')
+                    new_balance = available_balance + reward
+                    frappe.db.set_value("User Wallet",trade["first_user_id"],'balance',new_balance)
+                
+                else:
+                    result = frappe.db.sql("""
+                        SELECT name
+                        FROM `tabHolding`
+                        WHERE market_id = %s
+                        AND status = 'EXITING'
+                        AND order_id = %s
+                        AND user_id = %s
+                        AND opinion_type = %s
+                        ORDER BY price
+                    """, (
+                        trade["market_id"],
+                        trade["first_user_order_id"],
+                        trade["first_user_id"],
+                        trade["first_user_option"]
+                    ), as_dict=True)
 
-                    if trade_quantity == 0:
-                        break
+                    trade_quantity = quantity
 
-                frappe.db.commit()
+                    for row in result:
+                        holding_doc = frappe.get_doc("Holding", row["name"])
+                        remaining_quantity = holding_doc.quantity - holding_doc.filled_quantity
+                        quantity = 0
+
+                        if remaining_quantity <= trade_quantity:
+                            trade_quantity -= remaining_quantity
+                            holding_doc.filled_quantity = holding_doc.quantity
+                            holding_doc.status = "EXITED"
+                            quantity = remaining_quantity
+                        else:
+                            quantity = trade_quantity
+                            holding_doc.filled_quantity += trade_quantity
+                            trade_quantity = 0
+
+                        # Reward logic
+                        reward = quantity * holding_doc.exit_price
+                        holding_doc.returns += reward
+
+                        holding_doc.save(ignore_permissions=True)
+
+                        # Lock and fetch wallet
+                        wallet_data = frappe.db.sql("""
+                            SELECT name, balance FROM `tabUser Wallet`
+                            WHERE user = %s AND is_active = 1
+                            FOR UPDATE
+                        """, (trade["first_user_id"],), as_dict=True)
+
+                        if not wallet_data:
+                            frappe.db.rollback()
+                            return {"status": "error", "message": "No active wallet found."}
+
+                        wallet_name = wallet_data[0]["name"]
+                        available_balance = wallet_data[0]["balance"]
+
+                        new_balance = available_balance + reward
+
+                        # Update wallet
+                        frappe.db.sql("""
+                            UPDATE `tabUser Wallet`
+                            SET balance = %s
+                            WHERE name = %s
+                        """, (new_balance, wallet_name))
+                        
+                        exited_investment = quantity * holding_doc.price
+                        frappe.db.sql("""
+                            UPDATE `tabMarket`
+                            SET total_investment = total_investment - %s
+                            WHERE name = %s
+                        """, (exited_investment, market_id))
+
+                        if trade_quantity == 0:
+                            break
+
+                    frappe.db.commit()
 
                 holding_doc2 = frappe.get_doc({
                     "doctype": "Holding",

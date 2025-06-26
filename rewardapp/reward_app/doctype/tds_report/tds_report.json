@@ -1,0 +1,130 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-06-26 17:01:19.282740",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "user_id",
+  "user_name",
+  "pan",
+  "kyc_verified_user",
+  "event_name",
+  "financial_year",
+  "tds_deducted_amount",
+  "column_break_jltb",
+  "date_of_transaction",
+  "withdrawal_trigger_type",
+  "net_credited_amount",
+  "challanvoucher_no",
+  "gross_winning_amount",
+  "section_break_gzer",
+  "trades"
+ ],
+ "fields": [
+  {
+   "fetch_from": "user_id.username",
+   "fieldname": "user_name",
+   "fieldtype": "Data",
+   "label": "User Name"
+  },
+  {
+   "fetch_from": "user_id.pan",
+   "fieldname": "pan",
+   "fieldtype": "Data",
+   "label": "PAN"
+  },
+  {
+   "fieldname": "event_name",
+   "fieldtype": "Data",
+   "label": "Event Name"
+  },
+  {
+   "fieldname": "date_of_transaction",
+   "fieldtype": "Date",
+   "label": "Date of Transaction"
+  },
+  {
+   "fieldname": "financial_year",
+   "fieldtype": "Data",
+   "label": "Financial Year"
+  },
+  {
+   "fieldname": "gross_winning_amount",
+   "fieldtype": "Float",
+   "label": "Gross Winning Amount"
+  },
+  {
+   "fieldname": "tds_deducted_amount",
+   "fieldtype": "Float",
+   "label": "TDS Deducted Amount"
+  },
+  {
+   "fieldname": "net_credited_amount",
+   "fieldtype": "Float",
+   "label": "Net Credited Amount"
+  },
+  {
+   "fieldname": "challanvoucher_no",
+   "fieldtype": "Data",
+   "label": "Challan/Voucher No."
+  },
+  {
+   "fieldname": "withdrawal_trigger_type",
+   "fieldtype": "Data",
+   "label": "Withdrawal Trigger Type"
+  },
+  {
+   "fieldname": "trades",
+   "fieldtype": "Table",
+   "label": "Trades",
+   "options": "TDS by Markets"
+  },
+  {
+   "fieldname": "user_id",
+   "fieldtype": "Link",
+   "label": "User ID",
+   "options": "User"
+  },
+  {
+   "default": "0",
+   "fieldname": "kyc_verified_user",
+   "fieldtype": "Check",
+   "label": "KYC Verified User"
+  },
+  {
+   "fieldname": "column_break_jltb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_gzer",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-06-26 18:55:59.048724",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "TDS Report",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
