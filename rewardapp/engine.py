@@ -160,7 +160,7 @@ def trades():
                     winning_fee_applicable = tax_config.winning_fee_applicable
                     winning_fee_percentage = tax_config.winning_fee_percentage
                     if winning_fee_applicable:
-                        winning_amount = winning_amount * float(winning_fee_percentage)/100
+                        winning_amount = winning_amount - (winning_amount * float(winning_fee_percentage)/100)
 
                     return_result = frappe.db.sql("""
                         SELECT 
