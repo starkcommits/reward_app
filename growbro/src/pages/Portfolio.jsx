@@ -13,8 +13,43 @@ import {
   CloudLightning,
   ShieldEllipsis,
   ArrowDown,
+  FileText,
+  CalendarIcon,
   ArrowUp,
+  Download,
 } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Calendar } from '@/components/ui/calendar'
+import { format } from 'date-fns'
+import toast from 'react-hot-toast'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { cn } from '@/lib/utils'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Button } from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -28,11 +63,31 @@ import {
   Legend,
 } from 'chart.js'
 import TradeSheet from '../components/defaultTradeSheet'
-import { useFrappeAuth, useFrappeGetCall } from 'frappe-react-sdk'
+import {
+  useFrappeAuth,
+  useFrappeGetCall,
+  useFrappeGetDocList,
+  useFrappePostCall,
+} from 'frappe-react-sdk'
 import ActivePosition from '../components/ActivePositions'
+import NoActiveTradesIcon from '@/assets/NoActiveTradesIcon.svg'
 
 import PortfolioActiveValues from '../components/PortfolioActiveValues'
 import CompletedTrades from '../components/CompletedTrades'
+
+const FormSchema = z
+  .object({
+    from: z.date({
+      required_error: 'From date is required.',
+    }),
+    to: z.date({
+      required_error: 'To date is required.',
+    }),
+  })
+  .refine((data) => data.from.getTime() !== data.to.getTime(), {
+    message: 'From and To date cannot be the same.',
+    path: ['to'], // shows the error under the 'to' field
+  })
 
 ChartJS.register(
   CategoryScale,
@@ -46,6 +101,94 @@ ChartJS.register(
 )
 
 const Portfolio = () => {
+  const { call } = useFrappePostCall('frappe.client.get_list')
+  const { currentUser } = useFrappeAuth()
+  const form = useForm({
+    resolver: zodResolver(FormSchema),
+  })
+
+  const [isReportDrawerOpen, setIsReportDrawerOpen] = useState(false)
+
+  const downloadCSV = (data, filename) => {
+    if (!data || data.length === 0) {
+      alert('No data to download')
+      return
+    }
+
+    // Helper to convert `user_name` → `User Name`
+    const formatHeader = (key) =>
+      key
+        .replace(/_/g, ' ')
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+
+    // Format headers
+    const headers = Object.keys(data[0]).map(formatHeader).join(',')
+
+    // Keep values as-is
+    const rows = data.map((row) => Object.values(row).join(','))
+
+    // Combine headers and rows
+    const csvContent = [headers, ...rows].join('\n')
+
+    // Trigger file download
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const onSubmit = async (data) => {
+    console.log(data)
+    const getCorrectDateString = (date) => {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    }
+    const from = getCorrectDateString(data.from)
+    const to = getCorrectDateString(data.to)
+    console.log('Data: ', from, to, currentUser)
+    try {
+      const response = await call({
+        doctype: 'Holding', // replace with actual Doctype\
+        fields: [
+          'market_id',
+          'question',
+          'quantity',
+          'price',
+          'exit_price',
+          'returns',
+        ],
+        filters: [
+          ['creation', '>=', from + ' 00:00:00'],
+          ['creation', '<=', to + ' 23:59:59'],
+          ['user_id', '=', currentUser],
+        ],
+      })
+
+      console.log('Res : ', response)
+
+      const holdings = response.message || []
+
+      if (holdings.length > 0) {
+        const filename = `holdings_${from}_to_${to}_user_${currentUser}.csv`
+        downloadCSV(holdings, filename)
+        toast.success('Report Downloaded')
+        setIsReportDrawerOpen(false)
+      } else {
+        toast.error('No active holdings found')
+      }
+    } catch (error) {
+      console.error('Failed to fetch report', error)
+      toast.error('Failed to fetch data')
+    }
+  }
+
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const tab = searchParams.get('tab')
@@ -57,7 +200,7 @@ const Portfolio = () => {
   const [sellQuantity, setSellQuantity] = useState(null)
   const [previousOrderId, setPreviousOrderId] = useState(null)
   const [showTradeSheet, setShowTradeSheet] = useState(false)
-  const { currentUser } = useFrappeAuth()
+
   const [activeHoldings, setActiveHoldings] = useState({})
 
   const {
@@ -69,6 +212,12 @@ const Portfolio = () => {
     activeTab === 'active' ? undefined : null
   )
 
+  const { data } = useFrappeGetDocList('Holding', {
+    fields: ['*'],
+  })
+
+  console.log(data)
+
   const { data: completedTradesData, isLoading: completedTradesDataLoading } =
     useFrappeGetCall(
       'rewardapp.engine.total_returns',
@@ -77,8 +226,6 @@ const Portfolio = () => {
       },
       currentUser && activeTab === 'completed' ? undefined : null
     )
-
-  console.log('Marketwise: ', holdingData)
 
   useEffect(() => {
     const tab = searchParams.get('tab')
@@ -349,6 +496,33 @@ const Portfolio = () => {
             </button>
           </div> */}
 
+          {!holdingDataLoading &&
+            activeTab === 'active' &&
+            holdingData &&
+            Object.values(holdingData.message).length === 0 && (
+              <div className="w-full flex flex-col gap-2 items-center justify-center py-4">
+                <div>
+                  <img className="h-8 w-8" src={NoActiveTradesIcon} alt="" />
+                </div>
+                <div className="text-sm text-[#5F5F5F]">
+                  No active trades right now
+                </div>
+              </div>
+            )}
+
+          {!completedTradesDataLoading &&
+            activeTab === 'completed' &&
+            holdingData &&
+            completedTradesData?.message?.length === 0 && (
+              <div className="w-full flex flex-col gap-2 items-center justify-center py-4">
+                <div>
+                  <img className="h-8 w-8" src={NoActiveTradesIcon} alt="" />
+                </div>
+                <div className="text-sm text-[#5F5F5F]">
+                  No completed trades
+                </div>
+              </div>
+            )}
           {/* Trades List */}
           <div className="divide-y divide-gray-100">
             {activeTab === 'active' && holdingData
@@ -369,6 +543,149 @@ const Portfolio = () => {
           </div>
         </div>
       </div>
+
+      {activeTab === 'completed' && (
+        <div className="max-w-md mx-auto p-4">
+          <Drawer
+            className="max-w-md"
+            open={isReportDrawerOpen}
+            onOpenChange={setIsReportDrawerOpen}
+          >
+            <DrawerTrigger className="w-full">
+              <div className="w-full flex flex-col gap-2 justify-center items-center mt-4 border-2 border-dashed p-4 rounded-3xl">
+                <div>
+                  <Download className="h-10 w-20" strokeWidth={1.5} />
+                </div>
+                <div className="flex flex-col gap-1 items-center">
+                  <p className="text-sm font-semibold">
+                    Looking for older events
+                  </p>
+                  <p className="text-xs text-[#5F5F5F]">
+                    Click here to download
+                  </p>
+                </div>
+              </div>
+            </DrawerTrigger>
+            <DrawerContent className="p-0 max-w-lg mx-auto w-full">
+              <DrawerHeader className="w-full p-0 ">
+                <div className="flex flex-col gap-2 px-4 items-start">
+                  <DrawerTitle className="p-0 mx-left">
+                    <FileText strokeWidth={1} className="h-8 w-8" />
+                  </DrawerTitle>
+                  <DrawerDescription>Download PDF Report</DrawerDescription>
+                </div>
+              </DrawerHeader>
+              <DrawerFooter>
+                <div>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="">
+                      <div className="w-full flex flex-col gap-6">
+                        <FormField
+                          control={form.control}
+                          name="from"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel>From Date</FormLabel>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <Button
+                                      variant={'outline'}
+                                      className={cn(
+                                        'w-[240px] pl-3 text-left font-normal',
+                                        !field.value && 'text-muted-foreground'
+                                      )}
+                                    >
+                                      {field.value ? (
+                                        format(field.value, 'PPP')
+                                      ) : (
+                                        <span>Pick a date</span>
+                                      )}
+                                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                  className="w-auto p-0"
+                                  align="start"
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                    disabled={(date) =>
+                                      date > new Date() ||
+                                      date < new Date('1900-01-01')
+                                    }
+                                    captionLayout="dropdown"
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <FormDescription>
+                                Select the start date for the report range.
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="to"
+                          render={({ field }) => (
+                            <FormItem className="flex flex-col">
+                              <FormLabel>To Date</FormLabel>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <FormControl>
+                                    <Button
+                                      variant={'outline'}
+                                      className={cn(
+                                        'w-[240px] pl-3 text-left font-normal',
+                                        !field.value && 'text-muted-foreground'
+                                      )}
+                                    >
+                                      {field.value ? (
+                                        format(field.value, 'PPP')
+                                      ) : (
+                                        <span>Pick a date</span>
+                                      )}
+                                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
+                                  </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                  className="w-auto p-0"
+                                  align="start"
+                                >
+                                  <Calendar
+                                    mode="single"
+                                    selected={field.value}
+                                    onSelect={field.onChange}
+                                    disabled={(date) =>
+                                      date > new Date() ||
+                                      date < new Date('1900-01-01')
+                                    }
+                                    captionLayout="dropdown"
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              <FormDescription>
+                                Select the end date for the report range.
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <Button type="submit">Generate Report</Button>
+                      </div>
+                    </form>
+                  </Form>
+                </div>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      )}
 
       {showTradeSheet && selectedChoice && (
         <TradeSheet

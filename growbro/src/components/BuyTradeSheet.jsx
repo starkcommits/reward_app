@@ -240,6 +240,20 @@ const BuyTradeSheet = ({
               }}
             />
           </div>
+          <div className="flex justify-between px-14 font-inter leading-[100%] py-4">
+            <div className="flex flex-col gap-1 items-center">
+              <span className="font-semibold text-[20px] text-[#2C2D32]">
+                {parseFloat(price * quantity).toFixed(1)}
+              </span>
+              <span className="font-normal text-xs">You put in</span>
+            </div>
+            <div className="flex flex-col gap-1 items-center">
+              <span className="text-[#1C895E] font-semibold text-[20px] ">
+                {parseFloat(quantity * 10).toFixed(1)}
+              </span>
+              <span className="font-normal text-xs">You get</span>
+            </div>
+          </div>
 
           <div className="flex justify-between mb-4 text-lg">
             {/* <div>
