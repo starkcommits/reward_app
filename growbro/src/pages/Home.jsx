@@ -34,6 +34,7 @@ import ONOIcon from '@/assets/ono_icon_text.png'
 
 import scrollbarHide from 'tailwind-scrollbar-hide'
 import _ from 'lodash'
+import { NovuInbox } from '../components/ui/inbox/NovuInbox'
 
 const categoryIcons = {
   Sports: (
@@ -266,13 +267,7 @@ const Home = () => {
               >
                 <WalletBalance balance={userWallet?.balance} />
               </button>
-              <button
-                onClick={() => navigate('/notifications')}
-                className="p-2 hover:bg-gray-100 rounded-xl relative"
-              >
-                <Bell className="h-5 w-5 text-gray-700" />
-                <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full"></span>
-              </button>
+              <NovuInbox />
             </div>
           </div>
         </header>

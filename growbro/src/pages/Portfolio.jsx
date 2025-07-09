@@ -227,8 +227,6 @@ const Portfolio = () => {
       currentUser && activeTab === 'completed' ? undefined : null
     )
 
-  console.log('Marketwise: ', holdingData)
-
   useEffect(() => {
     const tab = searchParams.get('tab')
     if (!tab) {
