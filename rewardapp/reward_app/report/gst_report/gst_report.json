@@ -1,0 +1,32 @@
+{
+ "add_total_row": 0,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-07-01 12:49:13.643593",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letterhead": null,
+ "modified": "2025-07-01 12:54:21.240874",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "GST report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT creation, user, transaction_amount, closing_amount\nFROM `tabTransaction Logs`\nWHERE transaction_method IN ('CARD','UPI') ;",
+ "ref_doctype": "Transaction Logs",
+ "report_name": "GST report",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Trader"
+  }
+ ],
+ "timeout": 0
+}

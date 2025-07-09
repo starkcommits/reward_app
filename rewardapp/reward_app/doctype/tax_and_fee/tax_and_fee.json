@@ -1,0 +1,143 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:TAX-FEE",
+ "creation": "2025-06-27 18:42:40.154750",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "taxes_section",
+  "gst",
+  "gst_percentage",
+  "column_break_ywci",
+  "tds",
+  "tds_percentage",
+  "tds_slab",
+  "fees_section",
+  "platform_fee_applicable",
+  "platform_fee",
+  "column_break_robb",
+  "gateway_fee_applicable",
+  "gateway_fee",
+  "column_break_qwbr",
+  "winning_fee_applicable",
+  "winning_fee_percentage"
+ ],
+ "fields": [
+  {
+   "fieldname": "taxes_section",
+   "fieldtype": "Section Break",
+   "label": "Taxes"
+  },
+  {
+   "default": "0",
+   "fieldname": "gst",
+   "fieldtype": "Check",
+   "label": "GST"
+  },
+  {
+   "depends_on": "eval:doc.gst ==1;",
+   "fieldname": "gst_percentage",
+   "fieldtype": "Percent",
+   "label": "GST Percentage"
+  },
+  {
+   "fieldname": "column_break_ywci",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "tds",
+   "fieldtype": "Check",
+   "label": "TDS"
+  },
+  {
+   "depends_on": "eval:doc.tds ==1;",
+   "fieldname": "tds_percentage",
+   "fieldtype": "Percent",
+   "label": "TDS Percentage"
+  },
+  {
+   "depends_on": "eval:doc.tds ==1;",
+   "description": "Enter the amount above which TDS is liable to be deducted",
+   "fieldname": "tds_slab",
+   "fieldtype": "Float",
+   "label": "TDS Slab"
+  },
+  {
+   "fieldname": "fees_section",
+   "fieldtype": "Section Break",
+   "label": "Fees"
+  },
+  {
+   "default": "0",
+   "fieldname": "platform_fee_applicable",
+   "fieldtype": "Check",
+   "label": "Platform Fee Applicable"
+  },
+  {
+   "depends_on": "eval:doc.platform_fee_applicable ==1;",
+   "fieldname": "platform_fee",
+   "fieldtype": "Float",
+   "label": "Platform Fee"
+  },
+  {
+   "fieldname": "column_break_robb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "gateway_fee_applicable",
+   "fieldtype": "Check",
+   "label": "Gateway Fee Applicable"
+  },
+  {
+   "depends_on": "eval:doc.gateway_fee_applicable ==1;",
+   "fieldname": "gateway_fee",
+   "fieldtype": "Float",
+   "label": "Gateway Fee"
+  },
+  {
+   "fieldname": "column_break_qwbr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "winning_fee_applicable",
+   "fieldtype": "Check",
+   "label": "Winning Fee Applicable"
+  },
+  {
+   "fieldname": "winning_fee_percentage",
+   "fieldtype": "Percent",
+   "label": "Winning Fee Percentage"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-06-27 18:42:40.154750",
+ "modified_by": "Administrator",
+ "module": "Reward App",
+ "name": "Tax and Fee",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
