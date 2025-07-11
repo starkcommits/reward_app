@@ -16,9 +16,7 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { useEffect, useState } from 'react'
-import { useFrappeDeleteDoc } from 'frappe-react-sdk'
-import { DittofeedSdk } from '@dittofeed/sdk-web'
+import { useState } from 'react'
 
 const ActiveOrders = ({
   order,
@@ -82,27 +80,6 @@ const ActiveOrders = ({
         status: 'CANCELED',
       })
 
-      console.log('Orderererer', order)
-      DittofeedSdk.track({
-        event: 'Order Cancelled',
-        userId: currentUser, // optional but useful for identifying who canceled it
-        properties: {
-          order_id: order.name,
-          market_id: order.market_id,
-          opinion_type: order.opinion_type,
-          order_type: order.order_type,
-          amount: order.amount,
-          quantity: order.quantity,
-          timestamp: new Date().toISOString(),
-        },
-      })
-      //  else {
-      //   await updateDoc('Orders', order.name, {
-      //     status: 'CANCELED',
-      //   })
-      // }
-      // Remove this stray 'call' line
-      // call  <-- This is causing the error
       refetchActiveOrders()
       setIsOpen(false)
     } catch (err) {

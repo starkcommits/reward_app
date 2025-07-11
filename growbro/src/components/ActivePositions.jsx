@@ -49,7 +49,6 @@ import { useFrappeDeleteDoc } from 'frappe-react-sdk'
 import toast from 'react-hot-toast'
 import ExitHoldingsDialog from './ExitHoldingsDialog'
 import CancelHoldingsDialog from './CancelHoldingsDialog'
-import { DittofeedSdk } from '@dittofeed/sdk-web'
 
 const ActivePositions = ({ position, refetchActiveHoldings }) => {
   const navigate = useNavigate()
@@ -148,20 +147,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
           filled_quantity: 0,
           order_type: 'SELL',
         })
-        DittofeedSdk.track({
-          event: 'Sell Order Placed',
-          userId: currentUser,
-          properties: {
-            userId: currentUser,
-            market_id: position.market_id,
-            opinion_type: 'YES',
-            quantity:
-              position?.ACTIVE?.YES?.total_quantity -
-              position?.ACTIVE?.YES?.total_filled_quantity,
-            amount: yesPrice,
-            timestamp: new Date().toISOString(),
-          },
-        })
       }
       if (position?.ACTIVE?.NO?.total_quantity > 0 && noEnabled) {
         console.log('No')
@@ -176,20 +161,6 @@ const ActivePositions = ({ position, refetchActiveHoldings }) => {
           amount: noPrice,
           filled_quantity: 0,
           order_type: 'SELL',
-        })
-        DittofeedSdk.track({
-          event: 'Sell Order Placed',
-          userId: currentUser,
-          properties: {
-            userId: currentUser,
-            market_id: position.market_id,
-            opinion_type: 'NO',
-            quantity:
-              position?.ACTIVE?.NO?.total_quantity -
-              position?.ACTIVE?.NO?.total_filled_quantity,
-            amount: noPrice,
-            timestamp: new Date().toISOString(),
-          },
         })
       }
       refetchActiveHoldings()

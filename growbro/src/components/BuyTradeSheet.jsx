@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { DittofeedSdk } from '@dittofeed/sdk-web'
+
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -119,21 +119,6 @@ const BuyTradeSheet = ({
       }
 
       await createDoc('Orders', orderData)
-
-      DittofeedSdk.track({
-        event: 'Buy Order Placed',
-        userId: currentUser,
-        properties: {
-          market_id: marketId,
-          opinion_type: choice,
-          price,
-          quantity,
-          stop_loss_enabled: stopLossEnabled,
-          book_profit_enabled: bookProfitEnabled,
-          auto_cancel_enabled: autoCancelEnabled,
-          timestamp: new Date().toISOString(),
-        },
-      })
 
       mutate((key) => Array.isArray(key) && key[0] === 'get_all_orders')
 

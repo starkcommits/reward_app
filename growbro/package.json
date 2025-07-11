@@ -11,7 +11,6 @@
     "copy-html-entry": "cp ../rewardapp/public/growbro/index.html ../rewardapp/www/trade.html"
   },
   "dependencies": {
-    "@dittofeed/sdk-web": "^0.3.0",
     "@hookform/resolvers": "^5.0.1",
     "@novu/react": "^3.5.0",
     "@radix-ui/react-accordion": "^1.2.10",

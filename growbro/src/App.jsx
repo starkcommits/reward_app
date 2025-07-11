@@ -1,5 +1,5 @@
 import { Home, Search, Newspaper, Briefcase, Wallet } from 'lucide-react'
-import Navbar from './components/Navbar'
+
 import HomePage from './pages/Home'
 import WalletPage from './pages/Wallet'
 import EventDetails from './pages/EventDetails'
@@ -7,13 +7,12 @@ import EventDetails from './pages/EventDetails'
 import News from './pages/News'
 import CategoryPage from './pages/CategoryPage'
 import SearchPage from './pages/Search'
-// import Profile from './pages/Profile'
+
 import Settings from './pages/Settings'
-import Rewards from './pages/Rewards'
+
 import Notifications from './pages/Notifications'
 import SignIn from './pages/SignIn'
-import SignUp from './pages/SignUp'
-import KYC from './pages/KYC'
+
 import ProtectedRoute from './components/ProtectedRoute'
 import Layout from './components/Layout'
 import PublicRoute from './components/PublicRoute'
@@ -28,9 +27,7 @@ import OTPScreen from './pages/OTPScreen'
 import EditProfile from './pages/EditProfile'
 import { PanVerification } from './pages/PanVerification'
 import GotReferralCode from './pages/GotReferralCode'
-import DittofeedTracker from './components/DittofeedTracker'
-import { useFrappeAuth, useFrappeEventListener } from 'frappe-react-sdk'
-import RouteTracker from './components/RouteTracker'
+import { useFrappeAuth } from 'frappe-react-sdk'
 
 const navItems = [
   { icon: Home, label: 'Home', path: '/' },
@@ -45,8 +42,7 @@ function App() {
   return (
     <div className="w-full bg-gray-50 max-w-lg mx-auto">
       <Toaster />
-      <DittofeedTracker currentUser={currentUser} />
-      <RouteTracker currentUser={currentUser} />
+
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/signin" element={<SignIn />} />

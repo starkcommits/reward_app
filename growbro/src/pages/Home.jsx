@@ -136,6 +136,8 @@ const Home = () => {
 
   const [markets, setMarkets] = useState({})
 
+  console.log('MArket:', markets)
+
   const { data: marketCategories, isLoading: marketCategoriesLoading } =
     useFrappeGetDocList('Market Category', {
       fields: ['name', 'category_name', 'category_image'],

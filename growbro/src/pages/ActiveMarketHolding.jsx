@@ -83,7 +83,6 @@ import { Slider } from '@/components/ui/slider'
 import toast from 'react-hot-toast'
 import CancelHoldingDialog from '../components/CancelHoldingDialog'
 import SellTradeSheet from '../components/SellTradeSheet'
-import { DittofeedSdk } from '@dittofeed/sdk-web'
 
 ChartJS.register(
   CategoryScale,
@@ -484,17 +483,6 @@ const ActiveMarketHolding = () => {
           filled_quantity: 0,
           order_type: 'SELL',
         })
-        DittofeedSdk.track({
-          event: 'Sell Order Placed',
-          userId: currentUser,
-          properties: {
-            market_id: id,
-            opinion_type: 'YES',
-            quantity: totalExitData?.message?.YES,
-            amount: yesPrice,
-            timestamp: new Date().toISOString(),
-          },
-        })
       }
 
       if (totalExitData?.message?.NO > 0 && noEnabled) {
@@ -507,17 +495,6 @@ const ActiveMarketHolding = () => {
           amount: noPrice,
           filled_quantity: 0,
           order_type: 'SELL',
-        })
-        DittofeedSdk.track({
-          event: 'Sell Order Placed',
-          userId: currentUser,
-          properties: {
-            market_id: id,
-            opinion_type: 'NO',
-            quantity: totalExitData?.message?.NO,
-            amount: noPrice,
-            timestamp: new Date().toISOString(),
-          },
         })
       }
       refetchTotalExit()
@@ -554,18 +531,6 @@ const ActiveMarketHolding = () => {
           status: 'ACTIVE',
         })
       }
-      DittofeedSdk.track({
-        userId: currentUser,
-        event: 'Order Cancelled',
-        properties: {
-          order_id: order_id,
-          market_id: sellOrder.message.market_id,
-          opinion_type: sellOrder.message.opinion_type,
-          amount: sellOrder.message.amount,
-          quantity: sellOrder.message.quantity,
-          timestamp: new Date().toISOString(),
-        },
-      })
 
       if (activeTab === 'exiting')
         mutate((key) => Array.isArray(key) && key[0] === 'get_exiting_holdings')

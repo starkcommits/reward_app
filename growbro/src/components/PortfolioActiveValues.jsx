@@ -1,9 +1,7 @@
 import {
   useFrappeAuth,
   useFrappeEventListener,
-  useFrappeGetDoc,
   useFrappeGetDocList,
-  useSWR,
 } from 'frappe-react-sdk'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -11,39 +9,35 @@ import { useParams } from 'react-router-dom'
 const PortfolioActiveValues = () => {
   const { currentUser } = useFrappeAuth()
   const { id } = useParams()
-  const [market, setMarket] = useState({})
   const [holdings, setHoldings] = useState({})
   const [allHoldings, setAllHoldings] = useState({})
 
-  const {
-    data: holdingData,
-    isLoading: holdingDataLoading,
-    mutate: refetchHoldingData,
-  } = useFrappeGetDocList(
-    'Holding',
-    {
-      fields: [
-        'name',
-        'market_id',
-        'order_id',
-        'price',
-        'returns',
-        'quantity',
-        'opinion_type',
-        'status',
-        'exit_price',
-        'market_yes_price',
-        'market_no_price',
-        'filled_quantity',
-      ],
-      filters: [
-        ['user_id', '=', currentUser],
-        ['market_id', '=', id],
-        ['status', 'in', 'ACTIVE'],
-      ],
-    },
-    currentUser && id ? undefined : null
-  )
+  const { data: holdingData, isLoading: holdingDataLoading } =
+    useFrappeGetDocList(
+      'Holding',
+      {
+        fields: [
+          'name',
+          'market_id',
+          'order_id',
+          'price',
+          'returns',
+          'quantity',
+          'opinion_type',
+          'status',
+          'exit_price',
+          'market_yes_price',
+          'market_no_price',
+          'filled_quantity',
+        ],
+        filters: [
+          ['user_id', '=', currentUser],
+          ['market_id', '=', id],
+          ['status', 'in', 'ACTIVE'],
+        ],
+      },
+      currentUser && id ? undefined : null
+    )
 
   const {
     data: allHoldingData,
@@ -86,7 +80,6 @@ const PortfolioActiveValues = () => {
   }, [allHoldingData])
 
   useFrappeEventListener('market_event', (updatedData) => {
-    console.log('Hello')
     setAllHoldings((prevHoldings) => {
       const updatedHoldings = Object.fromEntries(
         Object.entries(prevHoldings).map(([key, holding]) => {

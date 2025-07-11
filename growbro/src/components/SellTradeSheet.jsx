@@ -16,7 +16,7 @@ import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
 import { LogOut } from 'lucide-react'
 import OrderBook from './OrderBook'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useFrappeUpdateDoc } from 'frappe-react-sdk'
 import { useSWRConfig } from 'frappe-react-sdk'
@@ -47,7 +47,6 @@ const SellTradeSheet = ({ position, refetcHoldingData, type }) => {
         exit_price: price,
         status: 'EXITING',
       })
-
 
       if (type === 'all')
         mutate((key) => Array.isArray(key) && key[0] === 'get_all_holdings')
